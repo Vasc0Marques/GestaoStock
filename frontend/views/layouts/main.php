@@ -5,10 +5,10 @@
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use yii\bootstrap5\Breadcrumbs;
-use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
+use yii\bootstrap\Breadcrumbs;
+use yii\bootstrap\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
 
 AppAsset::register($this);
 ?>
@@ -50,9 +50,10 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
     } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
+        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
+            . '<span class="me-2"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                '<i class="fa fa-sign-out"></i> Logout',
                 ['class' => 'btn btn-link logout text-decoration-none']
             )
             . Html::endForm();

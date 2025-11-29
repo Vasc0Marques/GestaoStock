@@ -1,0 +1,11 @@
+RewriteEngine on
+
+# Base directory for the alias
+RewriteBase /gestaostock/frontend/
+
+# If a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise forward the request to index.php
+RewriteRule . index.php
