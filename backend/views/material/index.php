@@ -14,12 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="material-index">
-    <p>
-        <?= Html::a('Create Material', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 400px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'nome_material',
@@ -28,15 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'categoria_id',
                 'label' => 'Categoria',
                 'value' => function ($model) {
-                    return $model->categoria ? $model->categoria->nome_categoria : '';
-                }
+                        return $model->categoria ? $model->categoria->nome_categoria : '';
+                    }
             ],
             [
                 'attribute' => 'zona_id',
                 'label' => 'Zona',
                 'value' => function ($model) {
-                    return $model->zona ? $model->zona->nome_zona : '';
-                }
+                        return $model->zona ? $model->zona->nome_zona : '';
+                    }
             ],
             'unidade_medida',
             'stock_minimo',
@@ -44,17 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Material $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    }
             ],
         ],
         // Optional: enable export, toolbar, etc.
         'toolbar' => [
-           
+
         ],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
+            'footer' => Html::a('Adicionar Material', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [
             'fontAwesome' => true
@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'toggleDataOptions' => [
             'minCount' => 10
         ],
+
     ]); ?>
 
 </div>

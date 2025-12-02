@@ -3,8 +3,8 @@
 use common\models\Zona;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\grid\ActionColumn;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -14,29 +14,33 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="zona-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Zona', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            ['class' => 'kartik\grid\SerialColumn'],
             'nome_zona',
             'descricao:ntext',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Zona $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
-    ]); ?>
+        'toolbar' => [
 
+        ],
+        'panel' => [
+            'type' => GridView::TYPE_DEFAULT,
+            'heading' => $this->title,
+            'footer' => Html::a('Adicionar Zona', ['create'], ['class' => 'btn btn-success']),
+        ],
+        'export' => [
+            'fontAwesome' => true
+        ],
+        'toggleDataOptions' => [
+            'minCount' => 10
+        ],
+    ]); ?>
 
 </div>

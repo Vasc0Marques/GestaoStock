@@ -48,13 +48,19 @@ AppAsset::register($this);
         'items' => $menuItems,
     ]);
     if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
+        echo Html::tag('div', Html::a('<i class="fa fa-sign-in"></i> Login', ['/site/login'], ['class' => 'btn btn-link login text-decoration-none']), ['class' => 'd-flex']);
     } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
+        echo Html::beginForm(['/site/logout'], 'post', [
+                'class' => 'd-flex align-items-center',
+                'style' => 'display:flex;align-items:center;gap:8px;'
+            ])
             . '<span class="me-2"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
             . Html::submitButton(
                 '<i class="fa fa-sign-out"></i> Logout',
-                ['class' => 'btn btn-link logout text-decoration-none']
+                [
+                    'class' => 'btn btn-link logout text-decoration-none',
+                    'style' => 'color:#212529;font-weight:500;padding-left:0;'
+                ]
             )
             . Html::endForm();
     }

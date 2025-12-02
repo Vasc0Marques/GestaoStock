@@ -21,13 +21,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'categoria_id')->dropDownList(
         $categorias,
-        ['prompt' => ['text' => 'Selecione a categoria', 'options' => ['disabled' => true, 'selected' => true]]]
-    ) ?>
+        [
+            'prompt' => ['text' => 'Selecione a categoria', 'options' => ['disabled' => true, 'selected' => true]],
+            'label' => 'Categoria'
+        ]
+    )->label('Categoria') ?>
 
     <?= $form->field($model, 'zona_id')->dropDownList(
         $zonas,
-        ['prompt' => ['text' => 'Selecione a zona', 'options' => ['disabled' => true, 'selected' => true]]]
-    ) ?>
+        [
+            'prompt' => ['text' => 'Selecione a zona', 'options' => ['disabled' => true, 'selected' => true]],
+            'label' => 'Zona'
+        ]
+    )->label('Zona') ?>
 
     <?= $form->field($model, 'unidade_medida')->dropDownList([
         'un' => 'Unidades (un)',

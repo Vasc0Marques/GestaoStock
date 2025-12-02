@@ -42,16 +42,17 @@ AdminLteAsset::register($this);
                 <ul class="nav navbar-nav">
                     <?php if (!Yii::$app->user->isGuest): ?>
                         <li>
-                            <?= Html::beginForm(['/site/logout'], 'post')
+                            <?= Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
+                                . '<span style="margin-right:12px;"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
                                 . Html::submitButton(
-                                    'Logout (' . Yii::$app->user->identity->username . ')',
-                                    ['class' => 'btn btn-link logout navbar-btn']
+                                    '<i class="fa fa-sign-out"></i>',
+                                    ['class' => 'btn btn-link logout navbar-btn', 'style' => 'padding-left:0; color:#222; font-weight:500; ']
                                 )
                                 . Html::endForm()
                             ?>
                         </li>
                     <?php else: ?>
-                        <li><?= Html::a('Login', ['/site/login'], ['class'=>'btn btn-link navbar-btn']) ?></li>
+                        <li><?= Html::a('<i class="fa fa-sign-in"></i> Login', ['/site/login'], ['class'=>'btn btn-link navbar-btn']) ?></li>
                     <?php endif; ?>
                 </ul>
             </div>

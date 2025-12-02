@@ -112,8 +112,14 @@ class MaterialController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        // Carregar categorias e zonas do banco de dados
+        $categorias = ArrayHelper::map(Categoria::find()->orderBy('nome_categoria')->all(), 'id', 'nome_categoria');
+        $zonas = ArrayHelper::map(Zona::find()->orderBy('nome_zona')->all(), 'id', 'nome_zona');
+
         return $this->render('update', [
             'model' => $model,
+            'categorias' => $categorias,
+            'zonas' => $zonas,
         ]);
     }
 
