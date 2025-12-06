@@ -18,7 +18,7 @@ use Yii;
  *
  * @property Categorias $categoria
  * @property EncomendaLinhas[] $encomendaLinhas
- * @property MateriaisFornecedores[] $materiaisFornecedores
+ * @property MaterialFornecedor[] $materiaisFornecedores
  * @property Movimentacoes[] $movimentacoes
  * @property Stock[] $stocks
  * @property Zonas $zona
@@ -99,7 +99,7 @@ class Material extends \yii\db\ActiveRecord
      */
     public function getMateriaisFornecedores()
     {
-        return $this->hasMany(MateriaisFornecedores::class, ['material_id' => 'id']);
+        return $this->hasMany(MaterialFornecedor::class, ['material_id' => 'id']);
     }
 
     /**

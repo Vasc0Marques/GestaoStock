@@ -14,14 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="movimento-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Movimento', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'id',
@@ -38,13 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
-        'toolbar' => [
-            '{export}',
-            '{toggleData}'
-        ],
+        'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
+            'footer' => Html::a('Create Movimento', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [
             'fontAwesome' => true

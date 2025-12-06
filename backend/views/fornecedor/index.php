@@ -14,35 +14,29 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fornecedor-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Fornecedor', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
-            'id',
-            'nome',
+            //'id',
+            'nome_fornecedor',
             'email',
             'telefone',
-            // ...adicione outras colunas relevantes...
             [
                 'class' => ActionColumn::class,
+                'template' => '{view}',
                 'urlCreator' => function ($action, Fornecedor $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],
         ],
-        'toolbar' => [
-            '{export}',
-            '{toggleData}'
-        ],
+        'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
+            'footer' => Html::a('Create Fornecedor', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [
             'fontAwesome' => true

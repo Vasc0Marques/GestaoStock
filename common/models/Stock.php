@@ -12,7 +12,7 @@ use Yii;
  * @property int|null $quantidade_atual
  * @property string|null $ultima_atualizacao
  *
- * @property Materiais $material
+ * @property Material $material
  */
 class Stock extends \yii\db\ActiveRecord
 {
@@ -36,7 +36,7 @@ class Stock extends \yii\db\ActiveRecord
             [['material_id'], 'required'],
             [['material_id', 'quantidade_atual'], 'integer'],
             [['ultima_atualizacao'], 'safe'],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materiais::class, 'targetAttribute' => ['material_id' => 'id']],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
         ];
     }
 
@@ -60,7 +60,7 @@ class Stock extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Materiais::class, ['id' => 'material_id']);
+        return $this->hasOne(Material::class, ['id' => 'material_id']);
     }
 
 }

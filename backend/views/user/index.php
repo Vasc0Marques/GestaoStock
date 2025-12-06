@@ -3,8 +3,8 @@
 use common\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\grid\ActionColumn;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -20,12 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
+            ['class' => 'kartik\grid\SerialColumn'],
             'id',
             'username',
             'auth_key',
@@ -38,13 +38,26 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
             //'verification_token',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],
+        'toolbar' => [],
+        'panel' => [
+            'type' => GridView::TYPE_DEFAULT,
+            'heading' => $this->title,
+            'footer' => Html::a('Create User', ['create'], ['class' => 'btn btn-success']),
+        ],
+        'export' => [
+            'fontAwesome' => true
+        ],
+        'toggleDataOptions' => [
+            'minCount' => 10
+        ],
+        'responsive' => true,
+        'hover' => true,
     ]); ?>
-
 
 </div>

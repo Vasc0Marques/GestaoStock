@@ -17,7 +17,7 @@ use Yii;
  * @property string|null $data_rececao
  *
  * @property EncomendaLinhas[] $encomendaLinhas
- * @property Fornecedores $fornecedor
+ * @property Fornecedor $fornecedor
  * @property User $user
  */
 class Encomenda extends \yii\db\ActiveRecord
@@ -53,7 +53,7 @@ class Encomenda extends \yii\db\ActiveRecord
             [['estado', 'observacoes'], 'string'],
             [['total'], 'number'],
             ['estado', 'in', 'range' => array_keys(self::optsEstado())],
-            [['fornecedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fornecedores::class, 'targetAttribute' => ['fornecedor_id' => 'id']],
+            [['fornecedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fornecedor::class, 'targetAttribute' => ['fornecedor_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -82,7 +82,7 @@ class Encomenda extends \yii\db\ActiveRecord
      */
     public function getEncomendaLinhas()
     {
-        return $this->hasMany(EncomendaLinhas::class, ['encomenda_id' => 'id']);
+        return $this->hasMany(EncomendaLinha::class, ['encomenda_id' => 'id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Encomenda extends \yii\db\ActiveRecord
      */
     public function getFornecedor()
     {
-        return $this->hasOne(Fornecedores::class, ['id' => 'fornecedor_id']);
+        return $this->hasOne(Fornecedor::class, ['id' => 'fornecedor_id']);
     }
 
     /**

@@ -14,8 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="categoria-index">
 
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'nome_categoria',
@@ -27,11 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
-        'toolbar' => [
-
-        ],
+        'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
+            'heading' => $this->title,
             'footer' => Html::a('Adicionar Categoria', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [

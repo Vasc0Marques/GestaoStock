@@ -13,8 +13,8 @@ use Yii;
  * @property float $preco_base
  * @property int|null $prazo_entrega_dias
  *
- * @property Fornecedores $fornecedor
- * @property Materiais $material
+ * @property Fornecedor $fornecedor
+ * @property Material $material
  */
 class MaterialFornecedor extends \yii\db\ActiveRecord
 {
@@ -38,8 +38,8 @@ class MaterialFornecedor extends \yii\db\ActiveRecord
             [['material_id', 'fornecedor_id', 'preco_base'], 'required'],
             [['material_id', 'fornecedor_id', 'prazo_entrega_dias'], 'integer'],
             [['preco_base'], 'number'],
-            [['fornecedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fornecedores::class, 'targetAttribute' => ['fornecedor_id' => 'id']],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materiais::class, 'targetAttribute' => ['material_id' => 'id']],
+            [['fornecedor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fornecedor::class, 'targetAttribute' => ['fornecedor_id' => 'id']],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class MaterialFornecedor extends \yii\db\ActiveRecord
      */
     public function getFornecedor()
     {
-        return $this->hasOne(Fornecedores::class, ['id' => 'fornecedor_id']);
+        return $this->hasOne(Fornecedor::class, ['id' => 'fornecedor_id']);
     }
 
     /**
@@ -74,7 +74,7 @@ class MaterialFornecedor extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Materiais::class, ['id' => 'material_id']);
+        return $this->hasOne(Material::class, ['id' => 'material_id']);
     }
 
 }

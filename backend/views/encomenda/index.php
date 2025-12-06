@@ -14,35 +14,45 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="encomenda-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Encomenda', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'id',
-            'fornecedor_id',
+            [
+                'attribute' => 'fornecedor_id',
+                'label' => 'Fornecedor',
+                'value' => function($model) {
+                    return $model->fornecedor ? $model->fornecedor->nome_fornecedor : '';
+                }
+            ],
             'data_encomenda',
-            'status',
-            // ...adicione outras colunas relevantes...
+            [
+                'attribute' => 'estado',
+                'label' => 'Estado',
+            ],
+            [
+                'attribute' => 'total',
+                'label' => 'Total',
+                'value' => function($model) {
+                    return $model->total . ' €';
+                }
+            ],
             [
                 'class' => ActionColumn::class,
+                'template' => '{view}',
                 'urlCreator' => function ($action, Encomenda $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],
         ],
-        'toolbar' => [
-            '{export}',
-            '{toggleData}'
-        ],
+        'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
+            'footer' => Html::a('Create Encomenda', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [
             'fontAwesome' => true

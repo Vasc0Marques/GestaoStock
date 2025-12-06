@@ -14,8 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="zona-index">
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Adicionar Zona', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panelFooterTemplate' => '{footer}',
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'nome_zona',
@@ -27,9 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
-        'toolbar' => [
-
-        ],
+        'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,

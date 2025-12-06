@@ -80,8 +80,30 @@ class EncomendaLinhaController extends Controller
         $model = new EncomendaLinha();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $material = \common\models\Material::findOne($model->material_id);
+                if ($material) {
+                    $model->nome_material = $material->nome_material;
+                    $preco = null;
+                    $matFornecedor = \common\models\MaterialFornecedor::find()
+                        ->where(['material_id' => $model->material_id, 'fornecedor_id' => $model->encomenda->fornecedor_id])
+                        ->one();
+                    if ($matFornecedor && $matFornecedor->preco_base > 0) {
+                        $preco = $matFornecedor->preco_base;
+                    } elseif ($material->preco_base > 0) {
+                        $preco = $material->preco_base;
+                    } else {
+                        $preco = 0;
+                    }
+                    $model->preco_unitario = $preco;
+                } else {
+                    $model->preco_unitario = 0;
+                }
+                if ($model->save(false)) {
+                    // Atualiza o total da encomenda
+                    $this->atualizaTotalEncomenda($model->encomenda_id);
+                    return $this->redirect(['/encomenda/view', 'id' => $model->encomenda_id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -103,8 +125,30 @@ class EncomendaLinhaController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $material = \common\models\Material::findOne($model->material_id);
+            if ($material) {
+                $model->nome_material = $material->nome_material;
+                $preco = null;
+                $matFornecedor = \common\models\MaterialFornecedor::find()
+                    ->where(['material_id' => $model->material_id, 'fornecedor_id' => $model->encomenda->fornecedor_id])
+                    ->one();
+                if ($matFornecedor && $matFornecedor->preco_base > 0) {
+                    $preco = $matFornecedor->preco_base;
+                } elseif ($material->preco_base > 0) {
+                    $preco = $material->preco_base;
+                } else {
+                    $preco = 0;
+                }
+                $model->preco_unitario = $preco;
+            } else {
+                $model->preco_unitario = 0;
+            }
+            if ($model->save(false)) {
+                // Atualiza o total da encomenda
+                $this->atualizaTotalEncomenda($model->encomenda_id);
+                return $this->redirect(['/encomenda/view', 'id' => $model->encomenda_id]);
+            }
         }
 
         return $this->render('update', [
@@ -140,5 +184,21 @@ class EncomendaLinhaController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Atualiza o total da encomenda somando todos os subtotais das linhas.
+     * @param int $encomendaId
+     */
+    protected function atualizaTotalEncomenda($encomendaId)
+    {
+        $encomenda = \common\models\Encomenda::findOne($encomendaId);
+        if ($encomenda) {
+            $total = (float) \common\models\EncomendaLinha::find()
+                ->where(['encomenda_id' => $encomendaId])
+                ->sum('subtotal');
+            $encomenda->total = $total;
+            $encomenda->save(false);
+        }
     }
 }

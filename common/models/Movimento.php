@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $data_movimentacao
  * @property string|null $origem
  *
- * @property Materiais $material
+ * @property Material $material
  * @property User $user
  */
 class Movimento extends \yii\db\ActiveRecord
@@ -76,7 +76,7 @@ class Movimento extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Materiais::class, ['id' => 'material_id']);
+        return $this->hasOne(Material::class, ['id' => 'material_id']);
     }
 
     /**

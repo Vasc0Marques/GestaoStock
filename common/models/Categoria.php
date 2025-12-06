@@ -11,7 +11,7 @@ use Yii;
  * @property string $nome_categoria
  * @property string|null $descricao
  *
- * @property Materiais[] $materiais
+ * @property Material[] $materiais
  */
 class Categoria extends \yii\db\ActiveRecord
 {
@@ -57,7 +57,7 @@ class Categoria extends \yii\db\ActiveRecord
      */
     public function getMateriais()
     {
-        return $this->hasMany(Materiais::class, ['categoria_id' => 'id']);
+        return $this->hasMany(Material::class, ['categoria_id' => 'id']);
     }
 
 }

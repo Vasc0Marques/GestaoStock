@@ -11,7 +11,7 @@ use Yii;
  * @property string $nome_zona
  * @property string|null $descricao
  *
- * @property Materiais[] $materiais
+ * @property Material[] $materiais
  */
 class Zona extends \yii\db\ActiveRecord
 {
@@ -57,7 +57,7 @@ class Zona extends \yii\db\ActiveRecord
      */
     public function getMateriais()
     {
-        return $this->hasMany(Materiais::class, ['zona_id' => 'id']);
+        return $this->hasMany(Material::class, ['zona_id' => 'id']);
     }
 
 }

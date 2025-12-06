@@ -16,7 +16,7 @@ use Yii;
  * @property int|null $ativo
  *
  * @property Encomendas[] $encomendas
- * @property MateriaisFornecedores[] $materiaisFornecedores
+ * @property MaterialFornecedor[] $materiaisFornecedores
  */
 class Fornecedor extends \yii\db\ActiveRecord
 {
@@ -79,7 +79,7 @@ class Fornecedor extends \yii\db\ActiveRecord
      */
     public function getMateriaisFornecedores()
     {
-        return $this->hasMany(MateriaisFornecedores::class, ['fornecedor_id' => 'id']);
+        return $this->hasMany(MaterialFornecedor::class, ['fornecedor_id' => 'id']);
     }
 
 }

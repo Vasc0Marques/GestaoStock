@@ -41,8 +41,8 @@ class EncomendaLinha extends \yii\db\ActiveRecord
             [['encomenda_id', 'material_id', 'quantidade'], 'integer'],
             [['preco_unitario', 'subtotal'], 'number'],
             [['nome_material'], 'string', 'max' => 100],
-            [['encomenda_id'], 'exist', 'skipOnError' => true, 'targetClass' => Encomendas::class, 'targetAttribute' => ['encomenda_id' => 'id']],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materiais::class, 'targetAttribute' => ['material_id' => 'id']],
+            [['encomenda_id'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Encomenda::class, 'targetAttribute' => ['encomenda_id' => 'id']],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Material::class, 'targetAttribute' => ['material_id' => 'id']],
         ];
     }
 
@@ -69,7 +69,7 @@ class EncomendaLinha extends \yii\db\ActiveRecord
      */
     public function getEncomenda()
     {
-        return $this->hasOne(Encomendas::class, ['id' => 'encomenda_id']);
+        return $this->hasOne(\common\models\Encomenda::class, ['id' => 'encomenda_id']);
     }
 
     /**
@@ -79,7 +79,7 @@ class EncomendaLinha extends \yii\db\ActiveRecord
      */
     public function getMaterial()
     {
-        return $this->hasOne(Materiais::class, ['id' => 'material_id']);
+        return $this->hasOne(\common\models\Material::class, ['id' => 'material_id']);
     }
 
 }

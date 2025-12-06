@@ -9,7 +9,7 @@ use kartik\grid\ActionColumn;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Materials';
+$this->title = 'Materiais';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'panelFooterTemplate' => '{footer}',
-        'containerOptions' => ['style' => 'height: 400px !important;'],
+        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'nome_material',
