@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\EncomendaLinha;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -79,31 +80,44 @@ class EncomendaLinhaController extends Controller
     {
         $model = new EncomendaLinha();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $material = \common\models\Material::findOne($model->material_id);
-                if ($material) {
-                    $model->nome_material = $material->nome_material;
-                    $preco = null;
-                    $matFornecedor = \common\models\MaterialFornecedor::find()
-                        ->where(['material_id' => $model->material_id, 'fornecedor_id' => $model->encomenda->fornecedor_id])
-                        ->one();
-                    if ($matFornecedor && $matFornecedor->preco_base > 0) {
-                        $preco = $matFornecedor->preco_base;
-                    } elseif ($material->preco_base > 0) {
-                        $preco = $material->preco_base;
-                    } else {
-                        $preco = 0;
-                    }
-                    $model->preco_unitario = $preco;
-                } else {
-                    $model->preco_unitario = 0;
-                }
-                if ($model->save(false)) {
-                    // Atualiza o total da encomenda
-                    $this->atualizaTotalEncomenda($model->encomenda_id);
-                    return $this->redirect(['/encomenda/view', 'id' => $model->encomenda_id]);
-                }
+        // Busca materiais do fornecedor da encomenda (para o dropdown)
+        $materiais = [];
+        $encomendaId = Yii::$app->request->get('encomenda_id') ?? $model->encomenda_id;
+        if ($encomendaId) {
+            $model->encomenda_id = $encomendaId;
+            $encomenda = \common\models\Encomenda::findOne($encomendaId);
+            if ($encomenda) {
+                $materiais = \yii\helpers\ArrayHelper::map(
+                    \common\models\Material::find()
+                        ->innerJoin('materiais_fornecedores mf', 'mf.material_id = materiais.id')
+                        ->where(['mf.fornecedor_id' => $encomenda->fornecedor_id])
+                        ->groupBy('materiais.id')
+                        ->orderBy('materiais.nome_material')
+                        ->all(),
+                    'id',
+                    'nome_material'
+                );
+            }
+        }
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $material = \common\models\Material::findOne($model->material_id);
+            $model->nome_material = $material ? $material->nome_material : '';
+
+            $preco = \common\models\MaterialFornecedor::find()
+                ->select('preco_base')
+                ->where([
+                    'material_id' => $model->material_id,
+                    'fornecedor_id' => $model->encomenda->fornecedor_id
+                ])
+                ->scalar();
+
+            $model->preco_unitario = is_numeric($preco) ? (float)$preco : 0.0;
+            $model->subtotal = $model->preco_unitario * (int)$model->quantidade;
+
+            if ($model->save(false)) {
+                $this->atualizaTotalEncomenda($model->encomenda_id);
+                return $this->redirect(['/encomenda/view', 'id' => $model->encomenda_id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -111,6 +125,7 @@ class EncomendaLinhaController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'materiais' => $materiais,
         ]);
     }
 
@@ -125,27 +140,33 @@ class EncomendaLinhaController extends Controller
     {
         $model = $this->findModel($id);
 
+        // Busca materiais do fornecedor da encomenda (para o dropdown)
+        $materiais = [];
+        $encomenda = $model->encomenda;
+        if ($encomenda) {
+            $materiais = \yii\helpers\ArrayHelper::map(
+                \common\models\Material::find()
+                    ->innerJoin('materiais_fornecedores mf', 'mf.material_id = materiais.id')
+                    ->where(['mf.fornecedor_id' => $encomenda->fornecedor_id])
+                    ->groupBy('materiais.id')
+                    ->orderBy('materiais.nome_material')
+                    ->all(),
+                'id',
+                'nome_material'
+            );
+        }
+
         if ($this->request->isPost && $model->load($this->request->post())) {
             $material = \common\models\Material::findOne($model->material_id);
-            if ($material) {
-                $model->nome_material = $material->nome_material;
-                $preco = null;
-                $matFornecedor = \common\models\MaterialFornecedor::find()
-                    ->where(['material_id' => $model->material_id, 'fornecedor_id' => $model->encomenda->fornecedor_id])
-                    ->one();
-                if ($matFornecedor && $matFornecedor->preco_base > 0) {
-                    $preco = $matFornecedor->preco_base;
-                } elseif ($material->preco_base > 0) {
-                    $preco = $material->preco_base;
-                } else {
-                    $preco = 0;
-                }
-                $model->preco_unitario = $preco;
-            } else {
-                $model->preco_unitario = 0;
-            }
+            $materialFornecedor = \common\models\MaterialFornecedor::findOne([
+                'material_id' => $model->material_id,
+            ]);
+            $model->nome_material = $material ? $material->nome_material : '';
+            $preco = $materialFornecedor ? $materialFornecedor->preco_base : 0;
+            $model->preco_unitario = is_numeric($preco) ? (float)$preco : 0.0;
+            $model->subtotal = $model->preco_unitario * (int)$model->quantidade;
+
             if ($model->save(false)) {
-                // Atualiza o total da encomenda
                 $this->atualizaTotalEncomenda($model->encomenda_id);
                 return $this->redirect(['/encomenda/view', 'id' => $model->encomenda_id]);
             }
@@ -153,6 +174,7 @@ class EncomendaLinhaController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'materiais' => $materiais,
         ]);
     }
 
@@ -165,9 +187,13 @@ class EncomendaLinhaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $encomendaId = $model->encomenda_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        $this->atualizaTotalEncomenda($encomendaId);
+
+        return $this->redirect(['/encomenda/view', 'id' => $encomendaId]);
     }
 
     /**

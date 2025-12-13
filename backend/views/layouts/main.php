@@ -15,8 +15,15 @@ AdminLteAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        body.modal-open {
+            overflow: auto !important;
+        }
+        .modal-backdrop {
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini">
 <?php $this->beginBody() ?>
 
@@ -79,6 +86,11 @@ AdminLteAsset::register($this);
             </style>
 
             <ul class="sidebar-menu">
+                <li>
+                    <a href="/gestaostock/backend/web/site/index" class="menu-item">
+                        <i class="fa fa-home"></i> <span>Dashboard</span>
+                    </a>
+                </li>
                 <li><a href="/gestaostock/backend/web/material/index" class="menu-item"><i class="fa fa-cubes"></i> <span>Materiais</span></a></li>
                 <li><a href="/gestaostock/backend/web/fornecedor/index" class="menu-item"><i class="fa fa-user"></i> <span>Fornecedores</span></a></li>
                 <li><a href="/gestaostock/backend/web/encomenda/index" class="menu-item"><i class="fa fa-shopping-cart"></i> <span>Encomendas</span></a></li>
@@ -132,10 +144,10 @@ AdminLteAsset::register($this);
 
     </div>
 
-    <!-- Main Footer -->
+    <!-- Main Footer
     <footer class="main-footer">
         <strong>&copy; <?= date('Y') ?> GestãoStock</strong>
-    </footer>
+    </footer> -->
 
 </div>
 

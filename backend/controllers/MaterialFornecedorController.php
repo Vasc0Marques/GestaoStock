@@ -121,9 +121,12 @@ class MaterialFornecedorController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $fornecedorId = $model->fornecedor_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        // Redireciona SEMPRE para a view do fornecedor, igual ao padrão das linhas de encomenda
+        return $this->redirect(['/fornecedor/view', 'id' => $fornecedorId]);
     }
 
     /**

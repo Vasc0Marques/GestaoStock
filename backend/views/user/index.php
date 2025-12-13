@@ -14,11 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'auth_key',
-            'password_hash',
+            //'password_hash',
             'pin',
             //'password_reset_token',
-            //'email:email',
-            //'status',
+            'email:email',
+            'status',
             //'created_at',
             //'updated_at',
             //'verification_token',
@@ -48,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
-            'footer' => Html::a('Create User', ['create'], ['class' => 'btn btn-success']),
+            'footer' => Html::a('Adicionar Utilizador', ['create'], ['class' => 'btn btn-success']),
         ],
         'export' => [
             'fontAwesome' => true

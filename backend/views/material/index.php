@@ -19,6 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'panelFooterTemplate' => '{footer}',
         'containerOptions' => ['style' => 'height: 440px !important;'],
+        'rowOptions' => function($model) {
+            return [
+                'ondblclick' => "window.location='" . \yii\helpers\Url::to(['view', 'id' => $model->id]) . "'",
+                'style' => 'cursor:pointer;',
+            ];
+        },
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             'nome_material',
@@ -42,9 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'criado_em',
             [
                 'class' => ActionColumn::class,
+                'template' => '{view}',
                 'urlCreator' => function ($action, Material $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                    }
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                }
             ],
         ],
         // Optional: enable export, toolbar, etc.

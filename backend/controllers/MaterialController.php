@@ -64,8 +64,18 @@ class MaterialController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $movimentacoesDataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $model->getMovimentacoes()->with('user'),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'movimentacoesDataProvider' => $movimentacoesDataProvider,
         ]);
     }
 

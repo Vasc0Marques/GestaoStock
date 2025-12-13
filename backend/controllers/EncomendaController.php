@@ -102,8 +102,37 @@ class EncomendaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $estadoAnterior = $model->estado;
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            // Se mudou para Recebida e não era Recebida antes
+            if ($estadoAnterior !== 'Recebida' && $model->estado === 'Recebida') {
+                foreach ($model->encomendaLinhas as $linha) {
+                    // Atualiza o stock
+                    $stock = \common\models\Stock::findOne(['material_id' => $linha->material_id]);
+                    if ($stock) {
+                        $stock->quantidade_atual += $linha->quantidade;
+                        $stock->ultima_atualizacao = date('Y-m-d H:i:s');
+                        $stock->save(false);
+                    } else {
+                        $novoStock = new \common\models\Stock();
+                        $novoStock->material_id = $linha->material_id;
+                        $novoStock->quantidade_atual = $linha->quantidade;
+                        $novoStock->ultima_atualizacao = date('Y-m-d H:i:s');
+                        $novoStock->save(false);
+                    }
+
+                    // Criar movimentação de entrada
+                    $mov = new \common\models\Movimento();
+                    $mov->material_id = $linha->material_id;
+                    $mov->user_id = $model->user_id;
+                    $mov->tipo = \common\models\Movimento::TIPO_ENTRADA;
+                    $mov->quantidade = $linha->quantidade;
+                    $mov->data_movimentacao = date('Y-m-d H:i:s');
+                    $mov->origem = 'Encomenda #' . $model->id;
+                    $mov->save(false);
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -121,7 +150,12 @@ class EncomendaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        // Elimina todas as linhas associadas a esta encomenda
+        \common\models\EncomendaLinha::deleteAll(['encomenda_id' => $model->id]);
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }

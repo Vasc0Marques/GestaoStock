@@ -155,7 +155,8 @@ $linhasProvider = new \yii\data\ActiveDataProvider([
                         'template' => '{update} {delete}',
                         'controller' => 'encomenda-linha',
                         'urlCreator' => function ($action, $linha, $key, $index) {
-                            return [$action === 'update' ? 'encomenda-linha/update' : $action, 'id' => $linha->id];
+                            // Corrige para sempre usar o controller encomenda-linha
+                            return [$action === 'update' ? 'encomenda-linha/update' : 'encomenda-linha/delete', 'id' => $linha->id];
                         },
                         'buttons' => [
                             'update' => function ($url, $linha, $key) {

@@ -147,8 +147,10 @@ $materiaisProvider = new \yii\data\ActiveDataProvider([
                     [
                         'class' => 'kartik\grid\ActionColumn',
                         'template' => '{update} {delete}',
+                        'controller' => 'material-fornecedor',
                         'urlCreator' => function ($action, $mf, $key, $index) {
-                            return [$action === 'update' ? 'material-fornecedor/update' : $action, 'id' => $mf->id];
+                            // Igual ao padrão das encomendas
+                            return [$action === 'update' ? 'material-fornecedor/update' : 'material-fornecedor/delete', 'id' => $mf->id];
                         },
                         'buttons' => [
                             'update' => function ($url, $mf, $key) {

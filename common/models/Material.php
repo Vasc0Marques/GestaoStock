@@ -109,7 +109,7 @@ class Material extends \yii\db\ActiveRecord
      */
     public function getMovimentacoes()
     {
-        return $this->hasMany(Movimentacoes::class, ['material_id' => 'id']);
+        return $this->hasMany(Movimento::class, ['material_id' => 'id']);
     }
 
     /**

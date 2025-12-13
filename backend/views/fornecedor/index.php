@@ -44,6 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'toggleDataOptions' => [
             'minCount' => 10
         ],
+        //double click to view
+        'rowOptions' => function ($model, $key, $index, $grid) {
+            return ['ondblclick' => 'window.location="' . Url::to(['fornecedor/view', 'id' => $model->id]) . '";'];
+        },
     ]); ?>
 
 </div>

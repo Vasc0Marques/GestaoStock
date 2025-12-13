@@ -24,8 +24,8 @@ class Movimento extends \yii\db\ActiveRecord
     /**
      * ENUM field values
      */
-    const TIPO_ENTRADA = 'entrada';
-    const TIPO_SAIDA = 'saida';
+    const TIPO_ENTRADA = 'Entrada';
+    const TIPO_SAIDA = 'Saida';
 
     /**
      * {@inheritdoc}
