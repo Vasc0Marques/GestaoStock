@@ -10,32 +10,139 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+<style>
+    .login-main {
+        display: flex;
+        height: 88.35vh;
+        min-height: 500px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px #0001;
+        overflow: hidden;
+    }
 
-    <p>Please fill out the following fields to login:</p>
+    .login-users {
+        flex: 7;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        gap: 32px 24px;
+        padding: 40px 32px;
+        background: #fff;
+    }
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+    .user-card {
+        width: 180px;
+        height: 180px;
+        background: #34495e;
+        color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #0002;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        padding-bottom: 24px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: border 0.2s, box-shadow 0.2s;
+    }
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+    .user-card.selected {
+        border: 3px solid #1abc9c;
+        box-shadow: 0 4px 16px #1abc9c33;
+    }
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+    .user-card .user-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+    .user-card .user-role {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
 
-                <div class="my-1 mx-0" style="color:#999;">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                    <br>
-                    Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
-                </div>
+    .login-pin {
+        flex: 3;
+        background: #2c3e50;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+    }
 
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                </div>
+    .pin-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 24px;
+    }
 
-            <?php ActiveForm::end(); ?>
+    .pin-input {
+        font-size: 2rem;
+        letter-spacing: 16px;
+        background: #fff;
+        color: #222;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        width: 180px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .pin-keyboard {
+        display: grid;
+        grid-template-columns: repeat(3, 60px);
+        gap: 12px;
+    }
+
+    .pin-key {
+        width: 60px;
+        height: 60px;
+        background: #34495e;
+        color: #fff;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .pin-key:hover {
+        background: #1abc9c;
+    }
+</style>
+<div class="login-main">
+    <div class="login-users">
+        <?php
+        // Mock users
+        $users = [
+            ['name' => 'João Silva', 'role' => 'Administrador'],
+            ['name' => 'Maria Costa', 'role' => 'Operador'],
+            ['name' => 'Pedro Sousa', 'role' => 'Gestor'],
+            ['name' => 'Ana Lima', 'role' => 'Operador'],
+        ];
+        foreach ($users as $i => $user): ?>
+            <div class="user-card<?= $i === 0 ? ' selected' : '' ?>">
+                <div class="user-name"><?= $user['name'] ?></div>
+                <div class="user-role"><?= $user['role'] ?></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="login-pin">
+        <div class="pin-title">Introduza o PIN</div>
+        <input class="pin-input" type="password" maxlength="4" disabled value="" placeholder="----" />
+        <div class="pin-keyboard">
+            <?php for ($n = 1; $n <= 9; $n++): ?>
+                <button class="pin-key" type="button"><?= $n ?></button>
+            <?php endfor; ?>
+            <div></div>
+            <button class="pin-key" type="button">0</button>
+            <button class="pin-key" type="button">⌫</button>
         </div>
     </div>
 </div>

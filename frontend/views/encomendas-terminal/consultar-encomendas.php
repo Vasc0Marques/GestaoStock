@@ -1,12 +1,11 @@
 <?php
 
 /** @var yii\web\View $this */
-
-$this->title = 'Gestão Stock';
+$this->title = 'Consultar Encomendas';
 ?>
 <div style="padding: 20px; height: 100%;">
-    <h2>Historico De Movimentações</h2>
+    <h2>Consultar Encomendas</h2>
     <div class="content-body">
-        <!-- Conteúdo aqui -->
+        <!-- Conteúdo de consulta de encomendas -->
     </div>
 </div>
