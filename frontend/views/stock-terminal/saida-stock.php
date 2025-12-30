@@ -1,11 +1,167 @@
 <?php
 
 /** @var yii\web\View $this */
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use kartik\grid\GridView;
+
 $this->title = 'Saída Stock';
+
+// Simulação de material pesquisado (substitua por lógica real)
+$material = null;
+$codigoPesquisado = Yii::$app->request->get('codigo');
+if ($codigoPesquisado) {
+    $material = \common\models\Material::find()->where(['codigo' => $codigoPesquisado])->one();
+    $stockAtual = null;
+    if ($material) {
+        $stock = \common\models\Stock::find()->where(['material_id' => $material->id])->one();
+        $stockAtual = $stock ? $stock->quantidade_atual : null;
+        // Movimentações do material
+        $movDataProvider = new \yii\data\ActiveDataProvider([
+            'query' => \common\models\Movimento::find()->where(['material_id' => $material->id])->orderBy(['data_movimentacao' => SORT_DESC]),
+            'pagination' => false,
+        ]);
+    }
+} else {
+    $stockAtual = null;
+    $movDataProvider = null;
+}
 ?>
-<div style="padding: 20px; height: 100%;">
-    <h2>Saída Stock</h2>
-    <div class="content-body">
-        <!-- Conteúdo de saída de stock -->
+<div class="container-fluid" style="padding: 20px; min-height: 90vh;">
+    <div class="row" style="display: flex; flex-wrap: nowrap; height: 90vh;">
+        <!-- Box esquerda: pesquisa material -->
+        <div class="col-md-3" style="border:1px solid #ccc; border-radius:8px; background:#fafbfc; min-height:0; max-width:220px; flex: 0 0 220px; margin-right: 24px; height: 100%; display: flex; align-items: flex-start;">
+            <div style="width:100%; padding:32px 12px 12px 12px; text-align:center;">
+                <div style="margin-bottom:32px;">
+                    <img src="https://barcode.tec-it.com/barcode.ashx?data=<?= Html::encode($codigoPesquisado ?: 'C61231') ?>&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:60px;">
+                </div>
+                <?php $form = ActiveForm::begin([
+                    'method' => 'get',
+                    'action' => ['stock-terminal/saida'],
+                    'options' => ['style' => 'margin-bottom:0;'],
+                ]); ?>
+                <div style="margin-bottom:16px;">
+                    <?= Html::input('text', 'codigo', $codigoPesquisado, [
+                        'class' => 'form-control',
+                        'placeholder' => 'Código do material',
+                        'style' => 'text-align:center; font-size:1em; padding:6px 8px;',
+                    ]) ?>
+                </div>
+                <div>
+                    <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary', 'style' => 'width:100%; font-size:1em; padding:6px 0;']) ?>
+                </div>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+        <!-- Box direita: tudo o resto dentro de uma box -->
+        <div class="col-md-9" style="height:100%; display:flex; flex-direction:column; padding:0;">
+            <div style="height:100%; border:1px solid #bbb; border-radius:8px; background:#fff; padding:18px; display:flex; flex-direction:column;">
+                <!-- Header com nome do material -->
+                <div style="font-weight:bold; font-size:1.2em; margin-bottom:16px;">
+                    <?= $material ? Html::encode($material->nome_material) : 'Material' ?>
+                </div>
+                <div style="display:flex; flex-wrap:nowrap; gap:24px; flex:1 1 0; height:100%;">
+                    <!-- Coluna central: imagem e saída -->
+                    <div style="flex:0 0 320px; max-width:320px; display:flex; flex-direction:column; gap:18px; padding:0; height:100%;">
+                        <!-- Imagem do material -->
+                        <div style="border:1px solid #ccc; border-radius:6px; background:#f4f4f4; width:240px; height:180px; display:flex; align-items:center; justify-content:center; margin:auto;">
+                            <?php if ($material && !empty($material->imagem)): ?>
+                                <img src="<?= Html::encode($material->imagem) ?>" alt="Imagem do material" style="max-width:220px; max-height:160px;">
+                            <?php else: ?>
+                                <span style="color:#bbb; font-size:3em;"><i class="fa fa-image"></i></span>
+                            <?php endif; ?>
+                        </div>
+                        <!-- Input e botão para saída de stock -->
+                        <div style="border:1px solid #ccc; border-radius:6px; background:#fafbfc; padding:12px; margin-top:auto;">
+                            <?php if ($material): ?>
+                                <?= Html::beginForm(['stock-terminal/saida'], 'post') ?>
+                                <div style="margin-bottom:8px;">
+                                    <?= Html::label('Quantidade a sair', 'quantidade_saida', ['style' => 'font-weight:500;']) ?>
+                                    <?= Html::input('number', 'quantidade_saida', '', [
+                                        'class' => 'form-control',
+                                        'min' => 1,
+                                        'max' => $stockAtual !== null ? $stockAtual : null,
+                                        'style' => 'margin-top:4px;',
+                                    ]) ?>
+                                </div>
+                                <?= Html::hiddenInput('codigo', $material->codigo) ?>
+                                <?= Html::submitButton('Registar Saída', ['class' => 'btn btn-danger', 'style' => 'width:100%;']) ?>
+                                <?= Html::endForm() ?>
+                            <?php else: ?>
+                                <div class="text-muted" style="font-size:1.1em;">Pesquise um material para registar saída.</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <!-- Coluna detalhes do material -->
+                    <div style="flex:1 1 0; display:flex; flex-direction:column; gap:18px; height:100%;">
+                        <div style="border:1px solid #ccc; border-radius:6px; background:#fafbfc; padding:18px; min-height:180px; margin-bottom:12px;">
+                            <?php if ($material): ?>
+                                <p><b>Código:</b> <?= Html::encode($material->codigo) ?></p>
+                                <p><b>Unidade:</b> <?= Html::encode($material->unidade_medida) ?></p>
+                                <p><b>Stock Atual:</b> <?= $stockAtual !== null ? Html::encode($stockAtual) : 'N/A' ?></p>
+                                <p><b>Stock Mínimo:</b> <?= Html::encode($material->stock_minimo) ?></p>
+                                <p><b>Zona:</b> <?= Html::encode($material->zona ? $material->zona->nome_zona : '') ?></p>
+                                <p><b>Categoria:</b> <?= Html::encode($material->categoria ? $material->categoria->nome_categoria : '') ?></p>
+                            <?php else: ?>
+                                <div class="text-muted" style="font-size:1.1em;">Pesquise um material pelo código para ver os detalhes.</div>
+                            <?php endif; ?>
+                        </div>
+                        <!-- Tabela de movimentações -->
+                        <div style="flex:1 1 0; display:flex; flex-direction:column; min-height:0;">
+                            <div style="font-weight:bold; margin-bottom:8px;">Histórico de Movimentações</div>
+                            <div style="border:1px solid #ccc; border-radius:6px; background:#fafbfc; padding:0; flex:1 1 0; min-height:0; overflow:auto;">
+                                <?php if ($material && $movDataProvider): ?>
+                                    <?= GridView::widget([
+                                        'dataProvider' => $movDataProvider,
+                                        'summary' => '',
+                                        'bordered' => true,
+                                        'striped' => true,
+                                        'hover' => true,
+                                        'condensed' => false,
+                                        'columns' => [
+                                            ['class' => 'kartik\grid\SerialColumn'],
+                                            [
+                                                'attribute' => 'data_movimentacao',
+                                                'label' => 'Data',
+                                            ],
+                                            [
+                                                'attribute' => 'tipo',
+                                                'label' => 'Tipo',
+                                            ],
+                                            [
+                                                'attribute' => 'quantidade',
+                                                'label' => 'Quantidade',
+                                            ],
+                                            [
+                                                'attribute' => 'origem',
+                                                'label' => 'Origem',
+                                            ],
+                                            [
+                                                'attribute' => 'user_id',
+                                                'label' => 'Utilizador',
+                                                'value' => function($model) {
+                                                    return $model->user ? $model->user->username : '';
+                                                }
+                                            ],
+                                        ],
+                                        'panel' => false,
+                                        'toolbar' => false,
+                                        'tableOptions' => [
+                                            'style' => 'font-size:1em;',
+                                        ],
+                                        'options' => [
+                                            'style' => 'width:100%;',
+                                        ],
+                                    ]); ?>
+                                <?php else: ?>
+                                    <div class="text-muted" style="padding:18px;">Nenhum histórico para exibir.</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

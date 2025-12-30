@@ -107,6 +107,8 @@ class EncomendaController extends Controller
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             // Se mudou para Recebida e não era Recebida antes
             if ($estadoAnterior !== 'Recebida' && $model->estado === 'Recebida') {
+                $model->data_rececao = date('Y-m-d\TH:i');
+                $model->save(false);
                 foreach ($model->encomendaLinhas as $linha) {
                     // Atualiza o stock
                     $stock = \common\models\Stock::findOne(['material_id' => $linha->material_id]);
@@ -131,6 +133,8 @@ class EncomendaController extends Controller
                     $mov->data_movimentacao = date('Y-m-d H:i:s');
                     $mov->origem = 'Encomenda #' . $model->id;
                     $mov->save(false);
+
+
                 }
             }
             return $this->redirect(['view', 'id' => $model->id]);

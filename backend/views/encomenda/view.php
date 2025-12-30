@@ -51,7 +51,11 @@ $linhasProvider = new \yii\data\ActiveDataProvider([
                         <tr>
                             <th style="text-align:left;">Data Encomenda</th>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control w-100" style="width:220px;text-align:left;" value="<?= Html::encode($model->data_encomenda) ?>" readonly>
+                                <input type="date"
+                                       class="form-control w-100"
+                                       style="width:220px;text-align:left;"
+                                       name="Encomenda[data_encomenda]"
+                                       value="<?= !empty($model->data_encomenda) ? date('Y-m-d', strtotime($model->data_encomenda)) : '' ?>">
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +89,17 @@ $linhasProvider = new \yii\data\ActiveDataProvider([
                             <td style="text-align:left;">
                                 <?= $form->field($model, 'data_rececao', [
                                     'template' => '{input}',
-                                ])->input('datetime-local', ['class' => 'form-control w-100', 'style' => 'width:220px;text-align:left;']) ?>
+                                ])->input(
+                                    'date',
+                                    [
+                                        'class' => 'form-control w-100',
+                                        'style' => 'width:220px;text-align:left;',
+                                        'value' => !empty($model->data_rececao)
+                                            ? date('Y-m-d', strtotime($model->data_rececao))
+                                            : ''
+                                    ]
+                                ) ?>
+
                             </td>
                         </tr>
                     </tbody>

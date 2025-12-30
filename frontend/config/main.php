@@ -43,5 +43,12 @@ return [
             ],
         ],
     ],
+    'modules' => [
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
+            // 'downloadAction' => 'gridview/export/download', // opcional
+        ],
+        // ...outros módulos se houver...
+    ],
     'params' => $params,
 ];

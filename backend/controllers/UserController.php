@@ -80,8 +80,16 @@ class UserController extends Controller
         $model = new User();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                // Trata password: só gera hash se foi preenchida
+                if (!empty($model->password_hash)) {
+                    $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
+                } else {
+                    $model->password_hash = null;
+                }
+                if ($model->save(false)) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -102,9 +110,19 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldPasswordHash = $model->password_hash;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            // Se o campo password_hash vier vazio, mantém o antigo
+            if (empty($model->password_hash)) {
+                $model->password_hash = $oldPasswordHash;
+            } else {
+                // Se mudou, gera novo hash
+                $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
+            }
+            if ($model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

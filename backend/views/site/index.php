@@ -62,7 +62,7 @@ $this->title = 'DashBoard';
     <!-- Second row: left small, right large -->
     <div class="row" style="margin-top:6px;">
         <div class="col-md-4" style="padding-left:10px;padding-right:10px;">
-            <div class="panel panel-default" style="height:282px;margin-bottom:6px;">
+            <div class="panel panel-default" style="height:350px;margin-bottom:6px;">
                 <div class="panel-body">
                     <h5><b>Materiais com mais Saída</b></h5>
                     <?php
@@ -107,7 +107,7 @@ $this->title = 'DashBoard';
             </div>
         </div>
         <div class="col-md-8" style="padding-left:10px;padding-right:10px;">
-            <div class="panel panel-default" style="height:282px;margin-bottom:6px;">
+            <div class="panel panel-default" style="height:350px;margin-bottom:6px;">
                 <div class="panel-body">
                     <h5><b>Últimos Movimentos</b></h5>
                     <?= GridView::widget([

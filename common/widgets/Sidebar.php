@@ -28,11 +28,26 @@ class Sidebar extends Widget
     {
         $html = Html::beginTag('div', ['class' => 'sidebar']);
 
+        $route = \Yii::$app->controller->id . '/' . \Yii::$app->controller->action->id;
+
         foreach ($this->items as $item) {
+            $url = is_array($item['url']) ? $item['url'][0] : $item['url'];
+            // Extrai o controller/action do url
+            $isActive = false;
+            if (is_array($item['url'])) {
+                $routeParts = explode('/', ltrim($url, '/'));
+                if (isset($routeParts[1])) {
+                    $itemRoute = $routeParts[0] . '/' . $routeParts[1];
+                } else {
+                    $itemRoute = $routeParts[0] . '/index';
+                }
+                $isActive = stripos($route, $itemRoute) === 0;
+            }
+            $btnClass = 'sidebar-btn' . ($isActive ? ' active' : '');
             $html .= Html::a(
                 $item['label'],
                 $item['url'],
-                ['class' => 'sidebar-btn']
+                ['class' => $btnClass]
             );
         }
 

@@ -60,6 +60,13 @@ AppAsset::register($this);
             padding-bottom: 30px;
         }
 
+        .sidebar-btn.active,
+        .sidebar-btn:active {
+            background: #1abc9c !important;
+            color: #fff !important;
+            box-shadow: 0 0 0 2px #1abc9c44;
+        }
+
         .sidebar-btn:hover {
             background: #1abc9c;
             color: #fff;
@@ -111,8 +118,8 @@ AppAsset::register($this);
         </main>
     </div>
 
-    <footer style="height: 50px; display: flex; align-items: center; justify-content: center; background: #34495e; color: #fff; margin: 0; padding: 0;">
-        <p style="margin: 0; font-size: 0.9rem;">&copy; Gestão Stock <?= date('Y') ?></p>
+    <footer style="height: 30px; display: flex; align-items: center; justify-content: center; background: #34495e; color: #fff; margin: 0; padding: 0;">
+        <p style="margin: 0; font-size: 0.85rem;">&copy; Gestão Stock <?= date('Y') ?></p>
     </footer>
 
     <?php $this->endBody() ?>

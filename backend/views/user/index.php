@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'kartik\grid\SerialColumn'],
             'id',
             'username',
-            'auth_key',
+            //'auth_key',
             //'password_hash',
             'pin',
             //'password_reset_token',
