@@ -10,9 +10,10 @@ use yii\widgets\ActiveForm;
 
 <div class="fornecedor-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'nome_fornecedor')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'imagemFile')->fileInput() ?>
 
     <?= $form->field($model, 'nif')->textInput(['maxlength' => true]) ?>
 

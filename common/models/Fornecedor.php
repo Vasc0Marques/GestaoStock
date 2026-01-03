@@ -43,8 +43,14 @@ class Fornecedor extends \yii\db\ActiveRecord
             [['ativo'], 'integer'],
             [['nome_fornecedor', 'email'], 'string', 'max' => 100],
             [['nif', 'telefone'], 'string', 'max' => 20],
+            [['imagem'], 'string', 'max' => 255],
+            [['imagemFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
         ];
     }
+    /**
+     * @var \yii\web\UploadedFile
+     */
+    public $imagemFile;
 
     /**
      * {@inheritdoc}

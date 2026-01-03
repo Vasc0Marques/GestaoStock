@@ -24,6 +24,15 @@ class MaterialController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => \yii\filters\AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['gestor'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -118,8 +127,23 @@ class MaterialController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->imagemFile = \yii\web\UploadedFile::getInstance($model, 'imagemFile');
+            if ($model->imagemFile) {
+                $dir = \Yii::getAlias('@backend/web/uploads');
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                $fileName = 'material_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
+                $filePath = $dir . DIRECTORY_SEPARATOR . $fileName;
+                if ($model->imagemFile->saveAs($filePath)) {
+                    $model->imagem = 'uploads/' . $fileName;
+                }
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         // Carregar categorias e zonas do banco de dados

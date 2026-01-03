@@ -21,6 +21,15 @@ class UserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => \yii\filters\AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['gestor'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -88,6 +97,13 @@ class UserController extends Controller
                     $model->password_hash = null;
                 }
                 if ($model->save(false)) {
+                    // RBAC: atribui role
+                    $auth = \Yii::$app->authManager;
+                    $auth->revokeAll($model->id);
+                    $role = $auth->getRole($model->cargo);
+                    if ($role) {
+                        $auth->assign($role, $model->id);
+                    }
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -121,6 +137,13 @@ class UserController extends Controller
                 $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
             }
             if ($model->save(false)) {
+                // RBAC: atualiza role
+                $auth = \Yii::$app->authManager;
+                $auth->revokeAll($model->id);
+                $role = $auth->getRole($model->cargo);
+                if ($role) {
+                    $auth->assign($role, $model->id);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

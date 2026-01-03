@@ -29,17 +29,21 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => ['index', 'about', 'contact', 'consultar', 'logout', 'signup', 'login', 'request-password-reset', 'reset-password', 'verify-email', 'resend-verification-email'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['index', 'about', 'contact'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['gestor', 'operador'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['login'],
                         'allow' => true,
-                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['logout', 'signup', 'request-password-reset', 'reset-password', 'verify-email', 'resend-verification-email'],
+                        'allow' => true,
+                        'roles' => ['gestor'],
                     ],
                 ],
             ],
@@ -85,19 +89,29 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        // Desativa CSRF só para este action
+        $this->enableCsrfValidation = true;
+        if (Yii::$app->request->isPost) {
+            $this->enableCsrfValidation = false;
+        }
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $error = null;
+        $selectedUserId = Yii::$app->request->get('id');
+        if (Yii::$app->request->isPost && $selectedUserId) {
+            $pin = Yii::$app->request->post('pin');
+            $user = \common\models\User::findOne(['id' => $selectedUserId, 'status' => \common\models\User::STATUS_ACTIVE]);
+            if ($user && $user->pin === $pin) {
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+                return $this->goBack();
+            } else {
+                $error = 'PIN incorreto.';
+            }
         }
-
-        $model->password = '';
-
         return $this->render('login', [
-            'model' => $model,
+            'error' => $error,
         ]);
     }
 

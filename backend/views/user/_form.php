@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password_hash')->passwordInput(['maxlength' => true, 'value' => '']) ?>
@@ -19,6 +20,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'pin')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cargo')->dropDownList([
+        'gestor' => 'Gestor',
+        'operador' => 'Operador',
+    ], ['prompt' => 'Selecione o cargo...']) ?>
 
     <?= $form->field($model, 'status')->dropDownList([
         10 => 'Ativo',

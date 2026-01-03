@@ -49,11 +49,17 @@ class Material extends \yii\db\ActiveRecord
             [['nome_material'], 'string', 'max' => 100],
             [['codigo'], 'string', 'max' => 50],
             [['unidade_medida'], 'string', 'max' => 20],
+            [['imagem'], 'string', 'max' => 255],
+            [['imagemFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
             [['codigo'], 'unique'],
             ['categoria_id', 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Categoria::class, 'targetAttribute' => ['categoria_id' => 'id']],
             ['zona_id', 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Zona::class, 'targetAttribute' => ['zona_id' => 'id']],
         ];
     }
+    /**
+     * @var \yii\web\UploadedFile
+     */
+    public $imagemFile;
 
     /**
      * {@inheritdoc}

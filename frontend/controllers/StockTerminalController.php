@@ -8,6 +8,27 @@ use yii\data\ActiveDataProvider;
 
 class StockTerminalController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['consultar', 'saida'],
+                'rules' => [
+                    [
+                        'actions' => ['consultar'],
+                        'allow' => true,
+                        'roles' => ['gestor', 'operador'],
+                    ],
+                    [
+                        'actions' => ['saida'],
+                        'allow' => true,
+                        'roles' => ['gestor'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actionConsultar()
     {
         // Corrige o nome da tabela para 'materiais' (não 'material')

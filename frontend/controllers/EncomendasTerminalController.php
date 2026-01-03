@@ -8,6 +8,22 @@ use yii\data\ActiveDataProvider;
 
 class EncomendasTerminalController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['consultar'],
+                'rules' => [
+                    [
+                        'actions' => ['consultar'],
+                        'allow' => true,
+                        'roles' => ['gestor', 'operador'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actionConsultar()
     {
         $dataProvider = new ActiveDataProvider([

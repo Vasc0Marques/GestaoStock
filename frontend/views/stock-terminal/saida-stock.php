@@ -29,34 +29,35 @@ if ($codigoPesquisado) {
 }
 ?>
 <div class="container-fluid" style="padding: 20px; min-height: 90vh;">
-    <div class="row" style="display: flex; flex-wrap: nowrap; height: 90vh;">
+    <div class="row" style="display: flex; flex-wrap: nowrap; height: 82vh;">
         <!-- Box esquerda: pesquisa material -->
-        <div class="col-md-3" style="border:1px solid #ccc; border-radius:8px; background:#fafbfc; min-height:0; max-width:220px; flex: 0 0 220px; margin-right: 24px; height: 100%; display: flex; align-items: flex-start;">
-            <div style="width:100%; padding:32px 12px 12px 12px; text-align:center;">
-                <div style="margin-bottom:32px;">
-                    <img src="https://barcode.tec-it.com/barcode.ashx?data=<?= Html::encode($codigoPesquisado ?: 'C61231') ?>&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:60px;">
+        <div class="col-md-4" style="border:1px solid #ccc; border-radius:8px; background:#fafbfc; min-height:0; max-width:310px; flex: 0 0 310px; margin-right: 24px; height: 100%; display: flex; align-items: center; justify-content: center;">
+            <div style="width:100%; padding:32px 12px 12px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <div style="margin-bottom:32px; display: flex; justify-content: center; width: 100%;">
+                    <img src="https://barcode.tec-it.com/barcode.ashx?data=<?= Html::encode($codigoPesquisado ?: 'C61231') ?>&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:100px; margin: 0 auto;">
                 </div>
                 <?php $form = ActiveForm::begin([
                     'method' => 'get',
                     'action' => ['stock-terminal/saida'],
                     'options' => ['style' => 'margin-bottom:0;'],
                 ]); ?>
-                <div style="margin-bottom:16px;">
+                <div style="margin-bottom:16px; display: flex; justify-content: center; width: 100%;">
                     <?= Html::input('text', 'codigo', $codigoPesquisado, [
                         'class' => 'form-control',
                         'placeholder' => 'Código do material',
-                        'style' => 'text-align:center; font-size:1em; padding:6px 8px;',
+                        'style' => 'text-align:center; font-size:1.3em; padding:10px 16px; margin: 0 auto; max-width: 270px; height: 48px;',
                     ]) ?>
                 </div>
-                <div>
-                    <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary', 'style' => 'width:100%; font-size:1em; padding:6px 0;']) ?>
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary', 'style' => 'width:100%; max-width:200px; font-size:1em; padding:6px 0; margin: 0 auto;']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
         <!-- Box direita: tudo o resto dentro de uma box -->
-        <div class="col-md-9" style="height:100%; display:flex; flex-direction:column; padding:0;">
-            <div style="height:100%; border:1px solid #bbb; border-radius:8px; background:#fff; padding:18px; display:flex; flex-direction:column;">
+        <div class="col-md-8" style="border:1px solid #ccc; border-radius:8px; background:#fff; min-height:0; flex: 1 1 0; height: 100%; display: flex; flex-direction: column; padding:0;">
+            <div style="flex: 1 1 0; display: flex; flex-direction: column; height: 100%; padding:0;">
+                <div style="height:100%; border:1px solid #bbb; border-radius:8px; background:#fff; padding:18px; display:flex; flex-direction:column;">
                 <!-- Header com nome do material -->
                 <div style="font-weight:bold; font-size:1.2em; margin-bottom:16px;">
                     <?= $material ? Html::encode($material->nome_material) : 'Material' ?>
