@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Encomenda;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * EncomendaController implements the CRUD actions for Encomenda model.
  */
-class EncomendaController extends Controller
+class EncomendaController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,9 +25,12 @@ class EncomendaController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                    'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),

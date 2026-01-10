@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Fornecedor;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * FornecedorController implements the CRUD actions for Fornecedor model.
  */
-class FornecedorController extends Controller
+class FornecedorController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,9 +25,12 @@ class FornecedorController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -67,36 +69,35 @@ class FornecedorController extends Controller
     }
 
     /**
-     * Displays a single Fornecedor model.
+     * Displays a single Fornecedor model and handles image upload/update.
      * @param int $id ID
-     * @return string
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+        $model = $this->findModel($id);
 
-    /**
-     * Creates a new Fornecedor model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new Fornecedor();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if (\Yii::$app->request->isPost) {
+            $model->load(\Yii::$app->request->post());
+            $model->imagemFile = \yii\web\UploadedFile::getInstance($model, 'imagemFile');
+            if ($model->imagemFile) {
+                $folder = \Yii::getAlias('@backend/web/uploads/');
+                if (!is_dir($folder)) {
+                    mkdir($folder, 0777, true);
+                }
+                $filename = 'fornecedor_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
+                $fullPath = $folder . $filename;
+                if ($model->imagemFile->saveAs($fullPath)) {
+                    $model->imagem = 'uploads/' . $filename;
+                }
+            }
+            if ($model->save(false)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
@@ -116,14 +117,14 @@ class FornecedorController extends Controller
             $model->load($this->request->post());
             $model->imagemFile = \yii\web\UploadedFile::getInstance($model, 'imagemFile');
             if ($model->imagemFile) {
-                $dir = \Yii::getAlias('@backend/web/uploads');
-                if (!is_dir($dir)) {
-                    mkdir($dir, 0777, true);
+                $folder = \Yii::getAlias('@backend/web/uploads/');
+                if (!is_dir($folder)) {
+                    mkdir($folder, 0777, true);
                 }
-                $fileName = 'fornecedor_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
-                $filePath = $dir . DIRECTORY_SEPARATOR . $fileName;
-                if ($model->imagemFile->saveAs($filePath)) {
-                    $model->imagem = 'uploads/' . $fileName;
+                $filename = 'fornecedor_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
+                $fullPath = $folder . $filename;
+                if ($model->imagemFile->saveAs($fullPath)) {
+                    $model->imagem = 'uploads/' . $filename;
                 }
             }
             if ($model->save()) {

@@ -138,4 +138,37 @@ class Material extends \yii\db\ActiveRecord
         return $this->hasOne(\common\models\Zona::class, ['id' => 'zona_id']);
     }
 
+    /**
+     * Retorna o URL da imagem para uso no backend
+     * @return string
+     */
+    public function getImageUrlBackend()
+    {
+        if ($this->imagem && file_exists(Yii::getAlias('@backend/web/' . $this->imagem))) {
+            return Yii::getAlias('@web/' . $this->imagem);
+        }
+        return Yii::getAlias('@web/img/noImage.jpg');
+    }
+
+    /**
+     * Retorna o URL da imagem para uso no frontend (aponta para o backend)
+     * @return string
+     */
+    public function getImageUrlFrontend()
+    {
+        if ($this->imagem) {
+            // Caminho absoluto para o backend a partir do frontend
+            return '/gestaostock/backend/web/' . $this->imagem;
+        }
+        return '/gestaostock/backend/web/img/noImage.jpg';
+    }
+
+    /**
+     * Verifica se tem imagem válida
+     * @return bool
+     */
+    public function hasImage()
+    {
+        return $this->imagem && file_exists(Yii::getAlias('@backend/web/' . $this->imagem));
+    }
 }

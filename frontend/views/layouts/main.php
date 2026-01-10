@@ -12,6 +12,9 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 
 AppAsset::register($this);
+$this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
+$this->registerCssFile('@web/css/stock-terminal.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
+$this->registerCssFile('@web/css/badges.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -94,14 +97,26 @@ AppAsset::register($this);
         <a href="/gestaostock/frontend/web/site/index" style="margin: 0; font-size: 1.8rem; font-weight: bold; color: #fff; text-decoration: none;">
             Gestão Stock
         </a>
-        <div style="position: absolute; right: 30px;">
+        <div style="position: absolute; right: 30px; display: flex; align-items: center; gap: 15px;">
             <?php if (Yii::$app->user->isGuest): ?>
                 <?= Html::a('<i class="fa fa-sign-in"></i> Login', ['/site/login'], ['class' => 'btn btn-link', 'style' => 'color: #fff; text-decoration: none; font-weight: 500;']) ?>
             <?php else: ?>
-                <?= Html::beginForm(['/site/logout'], 'post', ['style' => 'display: inline;']) ?>
-                <span style="color: #fff; margin-right: 15px;"><i class="fa fa-user"></i> <?= Html::encode(Yii::$app->user->identity->username) ?></span>
-                <?= Html::submitButton('<i class="fa fa-sign-out"></i> Logout', ['class' => 'btn btn-link', 'style' => 'color: #fff; text-decoration: none; font-weight: 500;']) ?>
-                <?= Html::endForm() ?>
+                <span style="color: #fff;">
+                    <i class="fa fa-user"></i> <?= Html::encode(Yii::$app->user->identity->username) ?>
+                    <?php if (Yii::$app->user->identity->cargo): ?>
+                        <span style="font-size: 0.85rem; opacity: 0.8;">(<?= Html::encode(ucfirst(Yii::$app->user->identity->cargo)) ?>)</span>
+                    <?php endif; ?>
+                </span>
+                <li>
+                    <?= Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
+                        . '<span style="margin-right:12px;"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
+                        . Html::submitButton(
+                            '<i class="fa fa-sign-out"></i> Logout',
+                            ['class' => 'btn btn-link logout', 'style' => 'padding-left:0; color:#fff;']
+                        )
+                        . Html::endForm()
+                    ?>
+                </li>
             <?php endif; ?>
         </div>
     </header>

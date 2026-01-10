@@ -8,45 +8,18 @@ use yii\helpers\Html;
 
 $this->title = 'Consultar Encomendas';
 ?>
-<style>
-.estado-badge {
-    display: inline-block;
-    padding: 0.35em 0.9em;
-    font-size: 1em;
-    font-weight: 600;
-    border-radius: 0.7em;
-    border: 2px solid transparent;
-    background: #f8f9fa;
-    min-width: 90px;
-    text-align: center;
-    margin: 0 auto;
-}
-.estado-pendente {
-    color: #b36b00;
-    border-color: #fd7e14;
-    background: #fff7e6;
-}
-.estado-recebida {
-    color: #198754;
-    border-color: #198754;
-    background: #e9fbe8;
-}
-.estado-cancelada {
-    color: #dc3545;
-    border-color: #dc3545;
-    background: #fbeaea;
-}
-.kv-align-center {
-    text-align: center !important;
-    vertical-align: middle !important;
-}
-</style>
 <div class="container-fluid" style="padding: 20px;">
     <div style=" display: flex; flex-direction: column;">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'panelFooterTemplate' => '{footer}',
             'containerOptions' => ['style' => 'height: 100% !important;'],
+            'rowOptions' => function($model) {
+                return [
+                    'ondblclick' => "window.location='" . \yii\helpers\Url::to(['encomendas-terminal/view', 'id' => $model->id]) . "'",
+                    'style' => 'cursor:pointer;',
+                ];
+            },
             'columns' => [
                 ['class' => 'kartik\grid\SerialColumn'],
                 [

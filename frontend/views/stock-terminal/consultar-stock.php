@@ -9,35 +9,34 @@ use kartik\grid\GridView;
 
 $this->title = 'Consultar Stock';
 ?>
-<div class="container-fluid" style="padding: 20px; min-height: 100vh;">
-    <div class="row" style="display: flex; flex-wrap: nowrap; height: 82vh;">
+<div class="stock-terminal-container">
+    <div class="stock-terminal-row">
         <!-- Lado esquerdo: QR, input e botão -->
-        <div class="col-md-4" style="border:1px solid #ccc; border-radius:8px; background:#fafbfc; min-height:0; max-width:310px; flex: 0 0 310px; margin-right: 24px; height: 100%; display: flex; align-items: center; justify-content: center;">
-            <div style="width:100%; padding:32px 12px 12px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div class="stock-terminal-left">
+            <div class="stock-terminal-left-content">
                 <!-- Simulação de código de barras -->
-                <div style="margin-bottom:32px; display: flex; justify-content: center; width: 100%;">
-                    <img src="https://barcode.tec-it.com/barcode.ashx?data=C61231&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:100px; margin: 0 auto;">
+                <div class="stock-terminal-barcode">
+                    <img src="https://barcode.tec-it.com/barcode.ashx?data=C61231&code=Code128&translate-esc=on" alt="Código de Barras">
                 </div>
                 <?php $form = ActiveForm::begin([
                     'method' => 'get',
                     'action' => ['stock-terminal/consultar'],
                     'options' => ['style' => 'margin-bottom:0;'],
                 ]); ?>
-                <div style="margin-bottom:16px; display: flex; justify-content: center; width: 100%;">
+                <div class="stock-terminal-input">
                     <?= Html::input('text', 'codigo', Yii::$app->request->get('codigo'), [
                         'class' => 'form-control',
                         'placeholder' => 'Código do material',
-                        'style' => 'text-align:center; font-size:1.3em; padding:10px 16px; margin: 0 auto; max-width: 270px; height: 48px;',
                     ]) ?>
                 </div>
-                <div style="display: flex; justify-content: center; width: 100%;">
-                    <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary', 'style' => 'width:100%; max-width:200px; font-size:1em; padding:6px 0; margin: 0 auto;']) ?>
+                <div class="stock-terminal-button">
+                    <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
         <!-- Lado direito: tabela de materiais em stock -->
-        <div class="col-md-8" style="border:1px solid #ccc; border-radius:8px; background:#fff; min-height:0; flex: 1 1 0; height: 100%; display: flex; flex-direction: column; padding:0;">
+        <div class="stock-terminal-right">
             <div style="flex: 1 1 0; display: flex; flex-direction: column; height: 100%; padding:0;">
                 <div class="panel panel-default" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column; height:100%; padding:0 18px 18px 18px;">
                     <div class="panel-body" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column; height:100%; padding:10px 0;">

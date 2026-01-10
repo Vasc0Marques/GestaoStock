@@ -10,7 +10,7 @@ use yii\web\Controller;
 use yii\web\Response;
 
 /**
- * Site controller
+ * Site controller - NÃO herda de BaseController para permitir acesso a login/access-denied
  */
 class SiteController extends Controller
 {
@@ -24,15 +24,18 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'access-denied'],
                         'allow' => true,
                     ],
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['administrador', 'gestor'],
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -147,6 +150,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            // Verifica se é operador após login
+            if (Yii::$app->user->identity->cargo === 'operador') {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'Operadores não têm acesso ao painel de administração.');
+                return $this->redirect(['access-denied']);
+            }
             return $this->goBack();
         }
 
@@ -158,6 +167,23 @@ class SiteController extends Controller
     }
 
     /**
+     * Access Denied action.
+     *
+     * @return string
+     */
+    public function actionAccessDenied()
+    {
+        $this->layout = 'blank';
+        
+        // Se ainda estiver logado, faz logout
+        if (!Yii::$app->user->isGuest) {
+            Yii::$app->user->logout();
+        }
+        
+        return $this->render('access-denied');
+    }
+
+    /**
      * Logout action.
      *
      * @return Response
@@ -165,7 +191,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 }

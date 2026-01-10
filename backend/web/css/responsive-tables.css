@@ -1,0 +1,74 @@
+/* Tabelas responsivas - ajuste automático APENAS à altura do viewport */
+
+/* GridView container com altura responsiva */
+.kv-grid-container,
+.kv-grid-container[style] {
+    height: calc(100vh - 280px) !important;
+    min-height: 400px !important;
+    max-height: calc(100vh - 280px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.kv-grid-wrapper {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.table-responsive {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+    min-height: 0 !important;
+}
+
+/* Panel heading e footer com tamanho fixo */
+.kv-panel-before,
+.kv-panel-after {
+    flex: 0 0 auto !important;
+}
+
+.kv-panel-pager {
+    flex: 0 0 auto !important;
+}
+
+/* Responsividade APENAS para altura em diferentes resoluções */
+@media (min-height: 900px) {
+    .kv-grid-container,
+    .kv-grid-container[style] {
+        height: calc(100vh - 250px) !important;
+        max-height: calc(100vh - 250px) !important;
+    }
+}
+
+@media (min-height: 1080px) {
+    .kv-grid-container,
+    .kv-grid-container[style] {
+        height: calc(100vh - 230px) !important;
+        max-height: calc(100vh - 230px) !important;
+    }
+}
+
+@media (min-height: 1200px) {
+    .kv-grid-container,
+    .kv-grid-container[style] {
+        height: calc(100vh - 220px) !important;
+        max-height: calc(100vh - 220px) !important;
+    }
+}
+
+@media (min-height: 1440px) {
+    .kv-grid-container,
+    .kv-grid-container[style] {
+        height: calc(100vh - 210px) !important;
+        max-height: calc(100vh - 210px) !important;
+    }
+}
+
+/* Tabela mantém largura original */
+.table {
+    margin-bottom: 0 !important;
+}

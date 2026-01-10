@@ -1,40 +1,29 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var \common\models\Material|null $material */
+/** @var int|null $stockAtual */
+/** @var \yii\data\ActiveDataProvider|null $movDataProvider */
+/** @var array|null $mensagem */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
 
 $this->title = 'Saída Stock';
-
-// Simulação de material pesquisado (substitua por lógica real)
-$material = null;
-$codigoPesquisado = Yii::$app->request->get('codigo');
-if ($codigoPesquisado) {
-    $material = \common\models\Material::find()->where(['codigo' => $codigoPesquisado])->one();
-    $stockAtual = null;
-    if ($material) {
-        $stock = \common\models\Stock::find()->where(['material_id' => $material->id])->one();
-        $stockAtual = $stock ? $stock->quantidade_atual : null;
-        // Movimentações do material
-        $movDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => \common\models\Movimento::find()->where(['material_id' => $material->id])->orderBy(['data_movimentacao' => SORT_DESC]),
-            'pagination' => false,
-        ]);
-    }
-} else {
-    $stockAtual = null;
-    $movDataProvider = null;
-}
 ?>
 <div class="container-fluid" style="padding: 20px; min-height: 90vh;">
+    <?php if (isset($mensagem) && $mensagem): ?>
+        <div class="alert alert-<?= $mensagem[0] ?>" style="font-size:1.1em; margin-bottom:18px;">
+            <?= htmlspecialchars($mensagem[1]) ?>
+        </div>
+    <?php endif; ?>
     <div class="row" style="display: flex; flex-wrap: nowrap; height: 82vh;">
         <!-- Box esquerda: pesquisa material -->
         <div class="col-md-4" style="border:1px solid #ccc; border-radius:8px; background:#fafbfc; min-height:0; max-width:310px; flex: 0 0 310px; margin-right: 24px; height: 100%; display: flex; align-items: center; justify-content: center;">
             <div style="width:100%; padding:32px 12px 12px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
                 <div style="margin-bottom:32px; display: flex; justify-content: center; width: 100%;">
-                    <img src="https://barcode.tec-it.com/barcode.ashx?data=<?= Html::encode($codigoPesquisado ?: 'C61231') ?>&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:100px; margin: 0 auto;">
+                    <img src="https://barcode.tec-it.com/barcode.ashx?data=<?= Html::encode($material ? $material->codigo : 'C61231') ?>&code=Code128&translate-esc=on" alt="Código de Barras" style="max-width:100%;height:100px; margin: 0 auto;">
                 </div>
                 <?php $form = ActiveForm::begin([
                     'method' => 'get',
@@ -42,7 +31,7 @@ if ($codigoPesquisado) {
                     'options' => ['style' => 'margin-bottom:0;'],
                 ]); ?>
                 <div style="margin-bottom:16px; display: flex; justify-content: center; width: 100%;">
-                    <?= Html::input('text', 'codigo', $codigoPesquisado, [
+                    <?= Html::input('text', 'codigo', $material ? $material->codigo : '', [
                         'class' => 'form-control',
                         'placeholder' => 'Código do material',
                         'style' => 'text-align:center; font-size:1.3em; padding:10px 16px; margin: 0 auto; max-width: 270px; height: 48px;',
@@ -67,11 +56,9 @@ if ($codigoPesquisado) {
                     <div style="flex:0 0 320px; max-width:320px; display:flex; flex-direction:column; gap:18px; padding:0; height:100%;">
                         <!-- Imagem do material -->
                         <div style="border:1px solid #ccc; border-radius:6px; background:#f4f4f4; width:240px; height:180px; display:flex; align-items:center; justify-content:center; margin:auto;">
-                            <?php if ($material && !empty($material->imagem)): ?>
-                                <img src="<?= Html::encode($material->imagem) ?>" alt="Imagem do material" style="max-width:220px; max-height:160px;">
-                            <?php else: ?>
-                                <span style="color:#bbb; font-size:3em;"><i class="fa fa-image"></i></span>
-                            <?php endif; ?>
+                            <img src="<?= $material ? $material->getImageUrlFrontend() : '/gestaostock/backend/web/img/noImage.jpg' ?>"
+                                alt="Foto do Material"
+                                style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
                         </div>
                         <!-- Input e botão para saída de stock -->
                         <div style="border:1px solid #ccc; border-radius:6px; background:#fafbfc; padding:12px; margin-top:auto;">
@@ -129,6 +116,13 @@ if ($codigoPesquisado) {
                                             [
                                                 'attribute' => 'tipo',
                                                 'label' => 'Tipo',
+                                                'format' => 'raw',
+                                                'contentOptions' => ['class' => 'kv-align-center'],
+                                                'value' => function($model) {
+                                                    $tipo = strtolower($model->tipo);
+                                                    $class = $tipo === 'entrada' ? 'tipo-entrada' : 'tipo-saida';
+                                                    return '<span class="tipo-badge ' . $class . '">' . Html::encode(ucfirst($model->tipo)) . '</span>';
+                                                }
                                             ],
                                             [
                                                 'attribute' => 'quantidade',

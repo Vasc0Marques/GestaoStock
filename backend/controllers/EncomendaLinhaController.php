@@ -5,14 +5,13 @@ namespace backend\controllers;
 use Yii;
 use common\models\EncomendaLinha;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * EncomendaLinhaController implements the CRUD actions for EncomendaLinha model.
  */
-class EncomendaLinhaController extends Controller
+class EncomendaLinhaController extends BaseController
 {
     /**
      * @inheritDoc
@@ -27,7 +26,7 @@ class EncomendaLinhaController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
                 ],

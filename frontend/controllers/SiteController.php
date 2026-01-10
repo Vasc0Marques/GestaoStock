@@ -21,9 +21,6 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -34,7 +31,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['index', 'about', 'contact'],
                         'allow' => true,
-                        'roles' => ['gestor', 'operador'],
+                        'roles' => ['administrador', 'gestor', 'operador'],
                     ],
                     [
                         'actions' => ['login'],
@@ -43,9 +40,12 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'signup', 'request-password-reset', 'reset-password', 'verify-email', 'resend-verification-email'],
                         'allow' => true,
-                        'roles' => ['gestor'],
+                        'roles' => ['administrador', 'gestor'],
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -116,9 +116,9 @@ class SiteController extends Controller
     }
 
     /**
-     * Logs out the current user.
+     * Logout action.
      *
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionLogout()
     {
@@ -269,5 +269,15 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+    /**
+     * Access denied page
+     *
+     * @return mixed
+     */
+    public function actionAccessDenied()
+    {
+        return $this->render('access-denied');
     }
 }

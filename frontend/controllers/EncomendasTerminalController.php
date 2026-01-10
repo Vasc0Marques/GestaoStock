@@ -13,12 +13,12 @@ class EncomendasTerminalController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['consultar'],
+                'only' => ['consultar', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['consultar'],
+                        'actions' => ['consultar', 'view'],
                         'allow' => true,
-                        'roles' => ['gestor', 'operador'],
+                        'roles' => ['administrador', 'gestor', 'operador'],
                     ],
                 ],
             ],
@@ -32,6 +32,16 @@ class EncomendasTerminalController extends Controller
         ]);
         return $this->render('consultar-encomendas', [
             'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionView($id)
+    {
+        $model = \common\models\Encomenda::find()->with(['fornecedor', 'user', 'encomendaLinhas.material'])->where(['id' => $id])->one();
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Encomenda não encontrada.');
+        }
+        return $this->render('view-encomenda', [
+            'model' => $model,
         ]);
     }
 }

@@ -3,101 +3,6 @@ use yii\bootstrap\Html;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<style>
-.login-main {
-    display: flex;
-    height: 88.35vh;
-    min-height: 500px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    box-shadow: 0 2px 16px #0001;
-    overflow: hidden;
-}
-.login-users {
-    flex: 7;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 32px 24px;
-    padding: 40px 32px;
-    background: #fff;
-}
-.user-card {
-    width: 180px;
-    height: 180px;
-    background: #34495e;
-    color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px #0002;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 24px;
-    cursor: pointer;
-    border: 3px solid transparent;
-    transition: border 0.2s, box-shadow 0.2s;
-}
-.user-card.selected {
-    border: 3px solid #1abc9c;
-    box-shadow: 0 4px 16px #1abc9c33;
-}
-.user-card .user-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-.user-card .user-role {
-    font-size: 1rem;
-    opacity: 0.8;
-}
-.login-pin {
-    flex: 3;
-    background: #2c3e50;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-}
-.pin-title {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin-bottom: 24px;
-}
-.pin-input {
-    font-size: 2rem;
-    letter-spacing: 16px;
-    background: #fff;
-    color: #222;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    width: 180px;
-    text-align: center;
-    margin-bottom: 24px;
-}
-.pin-keyboard {
-    display: grid;
-    grid-template-columns: repeat(3, 60px);
-    gap: 12px;
-}
-.pin-key {
-    width: 60px;
-    height: 60px;
-    background: #34495e;
-    color: #fff;
-    font-size: 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-.pin-key:hover {
-    background: #1abc9c;
-}
-</style>
 <?php if (isset($error) && $error): ?>
     <div class="alert alert-danger" style="margin: 24px; font-size: 1.2em;">
         <?= htmlspecialchars($error) ?>
@@ -125,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if ($selectedUser): ?>
             <div class="pin-title">PIN para <?= Html::encode($selectedUser->username) ?></div>
             <form id="pin-login-form" method="post" action="<?= \yii\helpers\Url::to(['site/login', 'id' => $selectedUser->id]) ?>">
-                                <input type="hidden" name="_csrf-frontend" value="<?= Yii::$app->request->getCsrfToken() ?>">
+                <input type="hidden" name="_csrf-frontend" value="<?= Yii::$app->request->getCsrfToken() ?>">
                 <input type="hidden" name="user_id" value="<?= $selectedUser->id ?>">
                 <input class="pin-input" name="pin" type="password" maxlength="4" autocomplete="off" value="" placeholder="----" readonly />
                 <div class="pin-keyboard">
@@ -146,8 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <script>
-    // Não é necessário JS para seleção do user, pois é feito por URL
-    // PIN keyboard logic
     const pinInput = document.querySelector('.pin-input');
     document.querySelectorAll('.pin-key').forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -159,7 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         });
     });
-    // Submit on Enter
     pinInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             document.getElementById('pin-login-form').submit();

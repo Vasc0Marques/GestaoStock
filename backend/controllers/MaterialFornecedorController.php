@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\MaterialFornecedor;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * MaterialFornecedorController implements the CRUD actions for MaterialFornecedor model.
  */
-class MaterialFornecedorController extends Controller
+class MaterialFornecedorController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,10 +25,13 @@ class MaterialFornecedorController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
                 ],
+                                'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'panelFooterTemplate' => '{footer}',
-        'containerOptions' => ['style' => 'height: 440px !important;'],
         'rowOptions' => function($model) {
             return [
                 'ondblclick' => "window.location='" . \yii\helpers\Url::to(['view', 'id' => $model->id]) . "'",

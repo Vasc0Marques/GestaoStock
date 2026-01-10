@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\User;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,7 +25,7 @@ class UserController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador'],
                         ],
                     ],
                 ],

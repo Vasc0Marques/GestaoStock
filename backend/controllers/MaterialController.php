@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use common\models\Material;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -14,11 +13,8 @@ use common\models\Zona;
 /**
  * MaterialController implements the CRUD actions for Material model.
  */
-class MaterialController extends Controller
+class MaterialController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -29,10 +25,14 @@ class MaterialController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
                 ],
+
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -66,14 +66,34 @@ class MaterialController extends Controller
     }
 
     /**
-     * Displays a single Material model.
+     * Displays a single Material model and handles image upload/update.
      * @param int $id ID
-     * @return string
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
         $model = $this->findModel($id);
+
+        if (\Yii::$app->request->isPost) {
+            // Carrega os dados do modelo (caso haja outros campos no futuro)
+            $model->load(\Yii::$app->request->post());
+            $model->imagemFile = \yii\web\UploadedFile::getInstance($model, 'imagemFile');
+            if ($model->imagemFile) {
+                $folder = \Yii::getAlias('@backend/web/uploads/');
+                if (!is_dir($folder)) {
+                    mkdir($folder, 0777, true);
+                }
+                $filename = 'material_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
+                $fullPath = $folder . $filename;
+                if ($model->imagemFile->saveAs($fullPath)) {
+                    $model->imagem = 'uploads/' . $filename;
+                }
+            }
+            if ($model->save(false)) { // ignora validação pois só atualiza imagem
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
 
         $movimentacoesDataProvider = new \yii\data\ActiveDataProvider([
             'query' => $model->getMovimentacoes()->with('user'),
@@ -131,14 +151,14 @@ class MaterialController extends Controller
             $model->load($this->request->post());
             $model->imagemFile = \yii\web\UploadedFile::getInstance($model, 'imagemFile');
             if ($model->imagemFile) {
-                $dir = \Yii::getAlias('@backend/web/uploads');
-                if (!is_dir($dir)) {
-                    mkdir($dir, 0777, true);
+                $folder = \Yii::getAlias('@backend/web/uploads/');
+                if (!is_dir($folder)) {
+                    mkdir($folder, 0777, true);
                 }
-                $fileName = 'material_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
-                $filePath = $dir . DIRECTORY_SEPARATOR . $fileName;
-                if ($model->imagemFile->saveAs($filePath)) {
-                    $model->imagem = 'uploads/' . $fileName;
+                $filename = 'material_' . $model->id . '_' . time() . '.' . $model->imagemFile->extension;
+                $fullPath = $folder . $filename;
+                if ($model->imagemFile->saveAs($fullPath)) {
+                    $model->imagem = 'uploads/' . $filename;
                 }
             }
             if ($model->save()) {

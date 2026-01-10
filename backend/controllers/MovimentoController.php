@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Movimento;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * MovimentoController implements the CRUD actions for Movimento model.
  */
-class MovimentoController extends Controller
+class MovimentoController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,9 +25,12 @@ class MovimentoController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                    'denyCallback' => function ($rule, $action) {
+                    return $this->redirect(['site/access-denied']);
+                },
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),

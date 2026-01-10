@@ -2,11 +2,9 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'Gestão Stock';
-?>
-<?php
 use kartik\grid\GridView;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 
 $this->title = 'Gestão Stock';
 
@@ -40,6 +38,13 @@ $dataProvider = new ActiveDataProvider([
                 [
                     'attribute' => 'tipo',
                     'label' => 'Tipo',
+                    'format' => 'raw',
+                    'contentOptions' => ['class' => 'kv-align-center'],
+                    'value' => function($mov) {
+                        $tipo = strtolower($mov->tipo);
+                        $class = $tipo === 'entrada' ? 'tipo-entrada' : 'tipo-saida';
+                        return '<span class="tipo-badge ' . $class . '">' . Html::encode(ucfirst($mov->tipo)) . '</span>';
+                    }
                 ],
                 [
                     'attribute' => 'quantidade',

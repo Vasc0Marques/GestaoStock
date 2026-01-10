@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'panelFooterTemplate' => '{footer}',
-        'containerOptions' => ['style' => 'height: 440px !important;'],
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
             //'id',

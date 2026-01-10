@@ -125,6 +125,12 @@ $this->title = 'DashBoard';
                             [
                                 'attribute' => 'tipo',
                                 'label' => 'Tipo',
+                                'format' => 'raw',
+                                'value' => function($mov) {
+                                    $tipo = strtolower($mov->tipo);
+                                    $class = $tipo === 'entrada' ? 'tipo-entrada' : 'tipo-saida';
+                                    return '<span class="tipo-badge ' . $class . '">' . Html::encode(ucfirst($mov->tipo)) . '</span>';
+                                }
                             ],
                             [
                                 'attribute' => 'quantidade',

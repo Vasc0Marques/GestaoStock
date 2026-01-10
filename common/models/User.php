@@ -213,4 +213,26 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Atribui o role baseado no cargo
+        $auth = Yii::$app->authManager;
+        
+        // Remove todos os roles anteriores
+        $auth->revokeAll($this->id);
+
+        // Atribui o novo role
+        if ($this->cargo) {
+            $role = $auth->getRole($this->cargo);
+            if ($role) {
+                $auth->assign($role, $this->id);
+            }
+        }
+    }
 }

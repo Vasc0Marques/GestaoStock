@@ -22,11 +22,11 @@ $materiaisProvider = new \yii\data\ActiveDataProvider([
     <div class="row">
         <div class="col-md-4 text-center">
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-            <div style="width:200px;height:200px;margin:auto;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:8px;border:1px solid #ddd;position:relative;">
+            <div style="width:200px;height:200px;margin:auto;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:8px;border:1px solid #ddd;position:relative; margin-bottom:44px;">
                 <label for="fornecedor-foto-upload" style="width:100%;height:100%;margin:0;cursor:pointer;display:flex;align-items:center;justify-content:center;">
-                    <img src="<?= $model->imagem ? Yii::getAlias('@web/' . $model->imagem) : 'https://via.placeholder.com/150?text=Foto+Fornecedor' ?>"
+                    <img src="<?= $model->getImageUrlBackend() ?>"
                         alt="Foto do Fornecedor"
-                        style="max-width:140px;max-height:140px;border-radius:8px;">
+                        style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                     <input type="file" id="fornecedor-foto-upload" name="Fornecedor[imagemFile]" accept="image/*" style="display:none;">
                     <span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.5);color:#fff;padding:2px 6px;border-radius:4px;font-size:12px;">Alterar foto</span>
                 </label>

@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Categoria;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * CategoriaController implements the CRUD actions for Categoria model.
  */
-class CategoriaController extends Controller
+class CategoriaController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,7 +25,7 @@ class CategoriaController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador'],
                         ],
                     ],
                 ],

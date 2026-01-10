@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Zona;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ZonaController implements the CRUD actions for Zona model.
  */
-class ZonaController extends Controller
+class ZonaController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,7 +25,7 @@ class ZonaController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador'],
                         ],
                     ],
                 ],

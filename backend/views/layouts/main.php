@@ -5,7 +5,6 @@ use dmstr\web\AdminLteAsset;
 
 AdminLteAsset::register($this);
 ?>
-
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -15,6 +14,8 @@ AdminLteAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/badges.css') ?>">
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/responsive-tables.css') ?>">
     <style>
         body.modal-open {
             overflow: auto !important;
@@ -98,32 +99,35 @@ AdminLteAsset::register($this);
             </ul>
 
             <?php
-            echo dmstr\widgets\Menu::widget([
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
-                'items' => [
-                    [
-                        'label' => 'Configurações',
-                        'icon' => 'folder',
-                        'items' => [
-                            [
-                                'label' => 'Categorias',
-                                'icon' => 'tags',
-                                'url' => ['/categoria/index'],
-                            ],
-                            [
-                                'label' => 'Zonas',
-                                'icon' => 'map-marker',
-                                'url' => ['/zona/index'],
-                            ],
-                            [
-                                'label' => 'Utilizadores',
-                                'icon' => 'users',
-                                'url' => ['/user/index'],
+            // Apenas administradores veem o menu de configurações
+            if (!Yii::$app->user->isGuest && Yii::$app->user->can('administrador')) {
+                echo dmstr\widgets\Menu::widget([
+                    'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
+                    'items' => [
+                        [
+                            'label' => 'Configurações',
+                            'icon' => 'folder',
+                            'items' => [
+                                [
+                                    'label' => 'Categorias',
+                                    'icon' => 'tags',
+                                    'url' => ['/categoria/index'],
+                                ],
+                                [
+                                    'label' => 'Zonas',
+                                    'icon' => 'map-marker',
+                                    'url' => ['/zona/index'],
+                                ],
+                                [
+                                    'label' => 'Utilizadores',
+                                    'icon' => 'users',
+                                    'url' => ['/user/index'],
+                                ],
                             ],
                         ],
                     ],
-                ],
-            ]);
+                ]);
+            }
             ?>
         </section>
     </aside>

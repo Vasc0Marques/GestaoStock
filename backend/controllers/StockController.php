@@ -4,14 +4,13 @@ namespace backend\controllers;
 
 use common\models\Stock;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * StockController implements the CRUD actions for Stock model.
  */
-class StockController extends Controller
+class StockController extends BaseController
 {
     /**
      * @inheritDoc
@@ -26,9 +25,12 @@ class StockController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['gestor'],
+                            'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                    'denyCallback' => function ($rule, $action) {
+                        return $this->redirect(['/site/access-denied']);
+                    },
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
