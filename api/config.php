@@ -1,18 +1,16 @@
 <?php
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/../common/config/params.php',
+    require __DIR__ . '/../common/config/params-local.php',
     require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    is_file(__DIR__ . '/params-local.php') ? require __DIR__ . '/params-local.php' : []
 );
 
 return [
     'id' => 'app-api',
-    'basePath' => dirname(__DIR__),
+    'basePath' => dirname(__DIR__) . '/api',
     'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
-    'modules' => [
-    ],
     'components' => [
         'request' => [
             'parsers' => [
@@ -29,7 +27,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -37,9 +35,18 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => true,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'default'],
+                'POST login' => 'auth/login',
+                'GET encomendas/<id:\d+>' => 'encomendas/view',
+                'GET movimentacoes' => 'movimentacao/index',
+                'POST movimentacoes' => 'movimentacao/create',
+                'GET stock/<id:\d+>' => 'stock/view',
             ],
+        ],
+        'db' => require __DIR__ . '/../common/config/db.php',
+        'response' => [
+            'format' => yii\web\Response::FORMAT_JSON,
         ],
     ],
     'params' => $params,

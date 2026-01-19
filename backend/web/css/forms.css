@@ -1,0 +1,110 @@
+/* Estilos para formulários modernos */
+.user-form .form-group,
+.categoria-form .form-group,
+.zona-form .form-group {
+    margin-bottom: 20px;
+}
+
+.user-form .hint-block,
+.categoria-form .hint-block,
+.zona-form .hint-block {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.user-form label,
+.categoria-form label,
+.zona-form label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Botões de formulário */
+.form-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e1e8ed;
+}
+
+.form-actions .btn {
+    min-width: 200px;
+    margin: 0 10px;
+}
+
+.form-actions .btn-lg {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Panel para formulários */
+.panel-default {
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border: none;
+}
+
+.panel-body {
+    padding: 30px;
+}
+
+/* Input groups */
+.input-group {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group-addon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 10px 15px;
+}
+
+/* Select modernos */
+select.form-control {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 35px;
+    appearance: none;
+    height: auto;
+    min-height: 44px;
+}
+
+/* Textarea moderno */
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    padding: 12px 15px;
+}
+
+/* Focus states */
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    outline: none;
+}
+
+/* Required field indicator */
+.required label:after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Form headers */
+.form-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 30px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+}

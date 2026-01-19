@@ -28,10 +28,10 @@ class MaterialFornecedorController extends BaseController
                             'roles' => ['administrador', 'gestor'],
                         ],
                     ],
+                    'denyCallback' => function ($rule, $action) {
+                        return $this->redirect(['site/access-denied']);
+                    },
                 ],
-                                'denyCallback' => function ($rule, $action) {
-                    return $this->redirect(['site/access-denied']);
-                },
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

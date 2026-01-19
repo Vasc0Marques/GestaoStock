@@ -1,0 +1,191 @@
+/* Sidebar moderno e user-friendly - SEM HOVER EFFECTS */
+
+/* FORCE: Remove TODOS os transforms, movimentos e hovers */
+.sidebar-menu li,
+.sidebar-menu li a,
+.sidebar-menu .menu-item,
+.sidebar-menu .menu-item i,
+.sidebar-menu .menu-item span,
+.sidebar-menu .treeview-menu > li > a {
+    transform: none !important;
+    translate: none !important;
+    will-change: auto !important;
+}
+
+/* Sidebar container */
+.main-sidebar {
+    background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%) !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+.sidebar-menu .menu-item {
+    padding: 14px 16px !important;
+    margin: 6px 0 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    color: #ecf0f1 !important;
+    text-decoration: none !important;
+    border-left: 3px solid transparent !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+/* Apenas active state, SEM hover */
+.sidebar-menu .menu-item.active,
+.sidebar-menu li.active > .menu-item {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%) !important;
+    border-left-color: #667eea !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Icons */
+.sidebar-menu .menu-item i {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    margin-right: 12px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+.sidebar-menu .menu-item.active i,
+.sidebar-menu li.active > .menu-item i {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Text */
+.sidebar-menu .menu-item span {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    vertical-align: middle !important;
+    flex: 1 !important;
+}
+
+/* Submenu (Configurações) */
+.sidebar-menu .treeview-menu {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 8px !important;
+    margin: 8px 0 8px 20px !important;
+    padding: 8px 0 !important;
+}
+
+.sidebar-menu .treeview-menu > li > a {
+    color: #bdc3c7 !important;
+    padding: 12px 20px !important;
+    border-radius: 6px !important;
+    margin: 4px 8px !important;
+}
+
+.sidebar-menu .treeview-menu > li > a > .fa {
+    margin-right: 10px !important;
+    color: #667eea !important;
+}
+
+/* Treeview toggle - igualar aos outros itens */
+.sidebar-menu .treeview > a {
+    padding: 14px 16px !important;
+    margin: 6px 0 !important;
+    border-radius: 8px !important;
+    color: #ecf0f1 !important;
+    display: flex !important;
+    align-items: center !important;
+    border-left: 3px solid transparent !important;
+}
+
+.sidebar-menu .treeview.active > a {
+    background: rgba(102, 126, 234, 0.2) !important;
+    color: #fff !important;
+    border-left-color: #667eea !important;
+}
+
+/* Ícone do treeview (Configurações) igual aos outros */
+.sidebar-menu .treeview > a > .fa:first-child {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    margin-right: 12px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+.sidebar-menu .treeview.active > a > .fa:first-child {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Arrow icon - manter pequeno */
+.sidebar-menu .treeview > a > .fa-angle-left,
+.sidebar-menu .treeview > a > .pull-right-container > .fa-angle-left {
+    transition: transform 0.3s ease !important;
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+    margin: 0 !important;
+}
+
+/* Separador visual */
+.sidebar-menu::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.5) 50%, transparent 100%);
+    margin: 10px 0 20px 0;
+}
+
+/* User panel (se existir) */
+.user-panel {
+    padding: 20px 10px !important;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.3) !important;
+    margin-bottom: 20px !important;
+}
+
+.user-panel .image img {
+    border: 3px solid #667eea !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4) !important;
+}
+
+.user-panel .info {
+    color: #ecf0f1 !important;
+    font-weight: 500 !important;
+}
+
+/* Scrollbar customizado */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.8);
+}

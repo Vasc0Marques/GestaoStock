@@ -45,7 +45,7 @@ $linhasProvider = new \yii\data\ActiveDataProvider([
                         <tr>
                             <th style="text-align:left;">Utilizador</th>
                             <td style="text-align:left;">
-                                <input type="text" class="form-control w-100" style="width:220px;text-align:left;" value="<?= $model->user ? Html::encode($model->user->username . (isset($model->user->apelido) ? ' ' . $model->user->apelido : '')) : '' ?>" readonly>
+                                <input type="text" class="form-control w-100" style="width:220px;text-align:left;" value="<?= $model->user ? Html::encode($model->user->getNomeCompleto()) : '' ?>" readonly>
                             </td>
                         </tr>
                         <tr>

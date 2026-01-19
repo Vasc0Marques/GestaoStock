@@ -22,15 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'kartik\grid\SerialColumn'],
             'id',
             'username',
-            //'auth_key',
-            //'password_hash',
+            [
+                'attribute' => 'nomeProprio',
+                'label' => 'Nome Completo',
+                'value' => function($model) {
+                    return $model->getNomeCompleto();
+                }
+            ],
             'pin',
-            //'password_reset_token',
             'email:email',
+            'cargo',
             'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
             [
                 'class' => ActionColumn::class,
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {

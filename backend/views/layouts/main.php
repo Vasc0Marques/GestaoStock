@@ -16,12 +16,21 @@ AdminLteAsset::register($this);
     <?php $this->head() ?>
     <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/badges.css') ?>">
     <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/responsive-tables.css') ?>">
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/forms.css') ?>">
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/main.css') ?>">
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/sidebar.css') ?>">
     <style>
         body.modal-open {
             overflow: auto !important;
         }
         .modal-backdrop {
             display: none !important;
+        }
+        /* FORCE: Mata qualquer animação no sidebar */
+        .main-sidebar, .main-sidebar *, .sidebar, .sidebar *, .sidebar-menu, .sidebar-menu * {
+            transition: none !important;
+            animation: none !important;
         }
     </style>
 </head>
@@ -51,7 +60,7 @@ AdminLteAsset::register($this);
                     <?php if (!Yii::$app->user->isGuest): ?>
                         <li>
                             <?= Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
-                                . '<span style="margin-right:12px;"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
+                                . '<span style="margin-right:12px;"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->getNomeCompleto()) . '</span>'
                                 . Html::submitButton(
                                     '<i class="fa fa-sign-out"></i>',
                                     ['class' => 'btn btn-link logout navbar-btn', 'style' => 'padding-left:0; color:#222; font-weight:500; ']
@@ -72,30 +81,32 @@ AdminLteAsset::register($this);
     <aside class="main-sidebar">
         <section class="sidebar">
 
-            <!-- Sidebar user panel -->
-            <?php if (!Yii::$app->user->isGuest): ?>
-            <?php endif; ?>
-
-            <!-- Compact icon-first Sidebar Menu -->
-            <style>
-                /* compact spacing and larger icon area similar to the provided design */
-                .sidebar-menu .menu-item { padding: 10px 14px; clear: both; }
-                .sidebar-menu .menu-item i { width: 34px; display: inline-block; text-align: center; font-size: 18px; margin-right: 10px; }
-                .sidebar-menu .menu-item span { vertical-align: middle; }
-                /* remove default bigger top padding for first item */
-                .sidebar-menu { margin-top: 6px; }
-            </style>
-
             <ul class="sidebar-menu">
-                <li>
+                <li class="<?= Yii::$app->controller->id === 'site' && Yii::$app->controller->action->id === 'index' ? 'active' : '' ?>">
                     <a href="/gestaostock/backend/web/site/index" class="menu-item">
                         <i class="fa fa-home"></i> <span>Dashboard</span>
                     </a>
                 </li>
-                <li><a href="/gestaostock/backend/web/material/index" class="menu-item"><i class="fa fa-cubes"></i> <span>Materiais</span></a></li>
-                <li><a href="/gestaostock/backend/web/fornecedor/index" class="menu-item"><i class="fa fa-user"></i> <span>Fornecedores</span></a></li>
-                <li><a href="/gestaostock/backend/web/encomenda/index" class="menu-item"><i class="fa fa-shopping-cart"></i> <span>Encomendas</span></a></li>
-                <li><a href="/gestaostock/backend/web/movimento/index" class="menu-item"><i class="fa fa-list-alt"></i> <span>Movimentações</span></a></li>
+                <li class="<?= Yii::$app->controller->id === 'material' ? 'active' : '' ?>">
+                    <a href="/gestaostock/backend/web/material/index" class="menu-item">
+                        <i class="fa fa-cubes"></i> <span>Materiais</span>
+                    </a>
+                </li>
+                <li class="<?= Yii::$app->controller->id === 'fornecedor' ? 'active' : '' ?>">
+                    <a href="/gestaostock/backend/web/fornecedor/index" class="menu-item">
+                        <i class="fa fa-truck"></i> <span>Fornecedores</span>
+                    </a>
+                </li>
+                <li class="<?= Yii::$app->controller->id === 'encomenda' ? 'active' : '' ?>">
+                    <a href="/gestaostock/backend/web/encomenda/index" class="menu-item">
+                        <i class="fa fa-shopping-cart"></i> <span>Encomendas</span>
+                    </a>
+                </li>
+                <li class="<?= Yii::$app->controller->id === 'movimento' ? 'active' : '' ?>">
+                    <a href="/gestaostock/backend/web/movimento/index" class="menu-item">
+                        <i class="fa fa-exchange"></i> <span>Movimentações</span>
+                    </a>
+                </li>
             </ul>
 
             <?php
@@ -106,7 +117,7 @@ AdminLteAsset::register($this);
                     'items' => [
                         [
                             'label' => 'Configurações',
-                            'icon' => 'folder',
+                            'icon' => 'cog',
                             'items' => [
                                 [
                                     'label' => 'Categorias',

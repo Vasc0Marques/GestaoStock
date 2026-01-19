@@ -1,0 +1,130 @@
+/* Frontend moderno - tema roxo/azul consistente */
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-color: #667eea;
+    --success-color: #2d8659;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Header */
+.app-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary-gradient);
+    color: white;
+    padding: 0 30px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.app-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s;
+}
+
+.app-logo:hover {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.app-user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-name {
+    color: white;
+    font-weight: 500;
+}
+
+.user-role {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-left: 5px;
+}
+
+.btn-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    opacity: 0.8;
+}
+
+.btn-logout {
+    color: white;
+    background: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    padding: 0;
+}
+
+.btn-logout:hover {
+    opacity: 0.8;
+}
+
+/* Main content */
+.main-content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.content-main {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.app-container {
+    margin: 0;
+    padding: 20px;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Footer */
+.app-footer {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+}
+
+.app-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+}

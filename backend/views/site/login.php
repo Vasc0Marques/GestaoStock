@@ -14,7 +14,7 @@ $this->title = 'Login';
     <div class="login-left">
         <div class="login-left-content">
             <div class="icon">
-                <i class="fa fa-cubes"></i>
+                <img src="<?= Yii::getAlias('@web/img/logo_sfundo.png') ?>" alt="Logo" style="max-width: 180px; height: auto; margin-bottom: 15px;">
             </div>
             <h1>Gestão Stock</h1>
             <p>Sistema de Gestão de Materiais e Inventário</p>

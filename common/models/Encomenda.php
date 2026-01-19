@@ -82,7 +82,7 @@ class Encomenda extends \yii\db\ActiveRecord
      */
     public function getEncomendaLinhas()
     {
-        return $this->hasMany(EncomendaLinha::class, ['encomenda_id' => 'id']);
+        return $this->hasMany(\common\models\EncomendaLinha::class, ['encomenda_id' => 'id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Encomenda extends \yii\db\ActiveRecord
      */
     public function getFornecedor()
     {
-        return $this->hasOne(Fornecedor::class, ['id' => 'fornecedor_id']);
+        return $this->hasOne(\common\models\Fornecedor::class, ['id' => 'fornecedor_id']);
     }
 
     /**

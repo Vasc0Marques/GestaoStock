@@ -1,0 +1,241 @@
+/* Modernização do Backend - User Friendly */
+
+/* Cores principais baseadas no login */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-color: #667eea;
+    --primary-dark: #764ba2;
+    --success-color: #2d8659;
+    --warning-color: #b36b00;
+    --danger-color: #dc3545;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --border-color: #e1e8ed;
+    --bg-light: #f8f9fa;
+}
+
+/* Main Header com gradiente */
+.main-header {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+}
+
+.main-header .logo {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.main-header .navbar {
+    background: transparent !important;
+}
+
+/* Sidebar modernizada */
+.main-sidebar {
+    background: #2c3e50 !important;
+}
+
+.sidebar-menu > li > a {
+    border-left: 3px solid transparent !important;
+    transition: all 0.3s !important;
+}
+
+.sidebar-menu > li.active > a,
+.sidebar-menu > li:hover > a {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-left-color: var(--primary-color) !important;
+}
+
+/* Botões modernos */
+.btn {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+    border: none !important;
+}
+
+.btn-primary {
+    background: var(--primary-gradient) !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #2d8659 0%, #1abc9c 100%) !important;
+    box-shadow: 0 2px 8px rgba(45, 134, 89, 0.3) !important;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(45, 134, 89, 0.4) !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%) !important;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3) !important;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4) !important;
+}
+
+/* Painéis modernos */
+.panel {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden !important;
+}
+
+.panel-heading {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 15px 20px !important;
+}
+
+.panel-default > .panel-heading {
+    background: var(--bg-light) !important;
+    color: var(--text-dark) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+/* Cards com hover effect */
+.box {
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s !important;
+}
+
+.box:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Form inputs modernos */
+.form-control {
+    border-radius: 8px !important;
+    border: 2px solid var(--border-color) !important;
+    padding: 12px 15px !important;
+    height: auto !important;
+    min-height: 44px !important;
+    line-height: 1.5 !important;
+    transition: all 0.3s !important;
+    font-size: 14px !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15) !important;
+}
+
+/* Fix para inputs password */
+input[type="password"].form-control,
+input[type="text"].form-control,
+input[type="email"].form-control,
+input[type="number"].form-control {
+    height: auto !important;
+    min-height: 44px !important;
+}
+
+/* Tabelas modernas */
+.table {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+.table thead th {
+    background: var(--bg-light) !important;
+    color: var(--text-dark) !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 15px !important;
+}
+
+.table tbody tr {
+    transition: all 0.2s !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05) !important;
+}
+
+/* Content header */
+.content-header h1 {
+    color: var(--text-dark) !important;
+    font-weight: 600 !important;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.breadcrumb > li + li:before {
+    content: "›" !important;
+    padding: 0 8px !important;
+    color: var(--text-muted) !important;
+}
+
+/* Alertas modernos */
+.alert {
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 15px 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #e9fbe8 0%, #d4f4dd 100%) !important;
+    color: var(--success-color) !important;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fbeaea 0%, #f8d7da 100%) !important;
+    color: var(--danger-color) !important;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff7e6 0%, #fff3cd 100%) !important;
+    color: var(--warning-color) !important;
+}
+
+/* Ícones com cor */
+.fa {
+    margin-right: 6px !important;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.loading {
+    animation: pulse 1.5s infinite !important;
+}
+
+/* Scroll suave */
+html {
+    scroll-behavior: smooth !important;
+}
+
+/* Sombras suaves */
+.shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16) !important;
+}

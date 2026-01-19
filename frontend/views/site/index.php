@@ -58,7 +58,7 @@ $dataProvider = new ActiveDataProvider([
                     'attribute' => 'user_id',
                     'label' => 'Utilizador',
                     'value' => function($mov) {
-                        return $mov->user ? $mov->user->username : '';
+                        return $mov->user ? $mov->user->getNomeCompleto() : '';
                     }
                 ],
             ],

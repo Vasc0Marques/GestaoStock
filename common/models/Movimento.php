@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\Material;
 
 /**
  * This is the model class for table "movimentacoes".
@@ -44,11 +45,12 @@ class Movimento extends \yii\db\ActiveRecord
             [['origem'], 'default', 'value' => null],
             [['material_id', 'user_id', 'tipo', 'quantidade'], 'required'],
             [['material_id', 'user_id', 'quantidade'], 'integer'],
+            [['quantidade'], 'integer', 'min' => 1],
             [['tipo'], 'string'],
             [['data_movimentacao'], 'safe'],
             [['origem'], 'string', 'max' => 100],
             ['tipo', 'in', 'range' => array_keys(self::optsTipo())],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materiais::class, 'targetAttribute' => ['material_id' => 'id']],
+            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::class, 'targetAttribute' => ['material_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }

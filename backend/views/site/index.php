@@ -17,7 +17,7 @@ $this->title = 'DashBoard';
 <div class="site-index">
 
     <!-- Top row: three equal boxes -->
-    <div class="row" style="margin-bottom:8px;">
+    <div class="row dashboard-top-row">
         <div class="col-md-4" style="padding-left:10px;padding-right:10px;">
             <div class="panel panel-default" style="height:220px;">
                 <div class="panel-body text-center">
@@ -47,12 +47,12 @@ $this->title = 'DashBoard';
                 </div>
             </div>
         </div>
-        <div class="col-md-4" style="padding-left:10px;padding-right:10px;">
-            <div class="panel panel-default" style="height:220px;">
+        <div class="col-md-4 dashboard-box">
+            <div class="panel panel-default"  style="height:220px;">
                 <div class="panel-body text-center">
-                    <h4><b>Informação Geral</b></h4>
-                    <div style="margin-top:30px;">
-                        <span class="text-muted">Bem-vindo ao sistema de gestão de stock.</span>
+                    <div style="margin-top:10px;">
+                        <img src="<?= Yii::getAlias('@web/img/logo.png') ?>" alt="Logo" style="max-width: 150px; height: auto; margin-bottom: 15px;">
+                        <br>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@ $this->title = 'DashBoard';
                                 'attribute' => 'user_id',
                                 'label' => 'Utilizador',
                                 'value' => function($mov) {
-                                    return $mov->user ? $mov->user->username : '';
+                                    return $mov->user ? $mov->user->getNomeCompleto() : '';
                                 }
                             ],
                         ],

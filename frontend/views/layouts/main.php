@@ -15,6 +15,8 @@ AppAsset::register($this);
 $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
 $this->registerCssFile('@web/css/stock-terminal.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
 $this->registerCssFile('@web/css/badges.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
+$this->registerCssFile('@web/css/sidebar.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
+$this->registerCssFile('@web/css/main.css', ['depends' => [\yii\bootstrap\BootstrapAsset::class]]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -25,120 +27,59 @@ $this->registerCssFile('@web/css/badges.css', ['depends' => [\yii\bootstrap\Boot
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .sidebar {
-            width: 350px;
-            background: #2c3e50;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            gap: 15px;
-            flex-shrink: 0;
-        }
-
-        .sidebar-btn {
-            width: 100%;
-            height: 360px;
-            padding: 15px 10px;
-            border: none;
-            background: #34495e;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
-            text-decoration: none;
-            text-align: center;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 30px;
-        }
-
-        .sidebar-btn.active,
-        .sidebar-btn:active {
-            background: #1abc9c !important;
-            color: #fff !important;
-            box-shadow: 0 0 0 2px #1abc9c44;
-        }
-
-        .sidebar-btn:hover {
-            background: #1abc9c;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .main-content-wrapper {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .content-main {
-            flex: 1;
-            overflow-y: auto;
-        }
-    </style>
     <?php $this->head() ?>
 </head>
 
-<body style="height: 100vh; margin: 0; padding: 0; display: flex; flex-direction: column;">
+<body class="app-body">
     <?php $this->beginBody() ?>
 
-    <header style="height: 60px; display: flex; align-items: center; justify-content: center; background: #34495e; color: #fff; position: relative; margin: 0; padding: 0 30px;">
-        <a href="/gestaostock/frontend/web/site/index" style="margin: 0; font-size: 1.8rem; font-weight: bold; color: #fff; text-decoration: none;">
-            Gestão Stock
-        </a>
-        <div style="position: absolute; right: 30px; display: flex; align-items: center; gap: 15px;">
-            <?php if (Yii::$app->user->isGuest): ?>
-                <?= Html::a('<i class="fa fa-sign-in"></i> Login', ['/site/login'], ['class' => 'btn btn-link', 'style' => 'color: #fff; text-decoration: none; font-weight: 500;']) ?>
-            <?php else: ?>
-                <span style="color: #fff;">
-                    <i class="fa fa-user"></i> <?= Html::encode(Yii::$app->user->identity->username) ?>
-                    <?php if (Yii::$app->user->identity->cargo): ?>
-                        <span style="font-size: 0.85rem; opacity: 0.8;">(<?= Html::encode(ucfirst(Yii::$app->user->identity->cargo)) ?>)</span>
-                    <?php endif; ?>
-                </span>
-                <li>
-                    <?= Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex align-items-center'])
-                        . '<span style="margin-right:12px;"><i class="fa fa-user"></i> ' . Html::encode(Yii::$app->user->identity->username) . '</span>'
+    <?php if (!(Yii::$app->controller->id === 'site' && Yii::$app->controller->action->id === 'login')): ?>
+        <header class="app-header">
+            <a href="/gestaostock/frontend/web/site/index" class="app-logo">
+                <i class="fa fa-cube"></i> Gestão Stock
+            </a>
+            <div class="app-user-info">
+                <?php if (Yii::$app->user->isGuest): ?>
+                    <?= Html::a('<i class="fa fa-sign-in"></i> Login', ['/site/login'], ['class' => 'btn-link']) ?>
+                <?php else: ?>
+                    <span class="user-name">
+                        <i class="fa fa-user"></i> <?= Html::encode(Yii::$app->user->identity->getNomeCompleto()) ?>
+                        <?php if (Yii::$app->user->identity->cargo): ?>
+                            <span class="user-role">(<?= Html::encode(ucfirst(Yii::$app->user->identity->cargo)) ?>)</span>
+                        <?php endif; ?>
+                    </span>
+                    <?= Html::beginForm(['/site/logout'], 'post', ['style' => 'display: inline;'])
                         . Html::submitButton(
                             '<i class="fa fa-sign-out"></i> Logout',
-                            ['class' => 'btn btn-link logout', 'style' => 'padding-left:0; color:#fff;']
+                            ['class' => 'btn-logout']
                         )
                         . Html::endForm()
                     ?>
-                </li>
-            <?php endif; ?>
-        </div>
-    </header>
+                <?php endif; ?>
+            </div>
+        </header>
+    <?php endif; ?>
 
     <div class="main-content-wrapper">
         <?php if (!(Yii::$app->controller->id === 'site' && Yii::$app->controller->action->id === 'login')): ?>
             <?= Sidebar::widget() ?>
         <?php endif; ?>
-        <main role="main" class="content-main" style="margin: 0; padding: 0;">
-            <div class="container" style="margin: 0; padding: 0; max-width: 100%; width: 100%; height: 100%;">
+        <main role="main" class="content-main">
+            <div class="app-container">
                 <?= Alert::widget() ?>
                 <?= $content ?>
             </div>
         </main>
     </div>
 
-    <footer style="height: 30px; display: flex; align-items: center; justify-content: center; background: #34495e; color: #fff; margin: 0; padding: 0;">
-        <p style="margin: 0; font-size: 0.85rem;">&copy; Gestão Stock <?= date('Y') ?></p>
-    </footer>
+    <?php if (!(Yii::$app->controller->id === 'site' && Yii::$app->controller->action->id === 'login')): ?>
+        <footer class="app-footer">
+            <p>&copy; Gestão Stock <?= date('Y') ?></p>
+        </footer>
+    <?php endif; ?>
 
     <?php $this->endBody() ?>
 </body>
 
 </html>
-<?php $this->endPage();
+<?php $this->endPage(); ?>

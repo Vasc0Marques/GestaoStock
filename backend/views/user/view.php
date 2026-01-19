@@ -31,15 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'username',
+            'nomeProprio:text:Nome Próprio',
+            'apelido',
+            [
+                'label' => 'Nome Completo',
+                'value' => $model->getNomeCompleto(),
+            ],
             'auth_key',
-            'password_hash',
             'pin',
-            'password_reset_token',
             'email:email',
+            'cargo',
             'status',
-            'created_at',
-            'updated_at',
-            'verification_token',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

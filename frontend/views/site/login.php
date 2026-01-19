@@ -8,14 +8,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= htmlspecialchars($error) ?>
     </div>
 <?php endif; ?>
-<div class="login-main">
+<div class="login-main" style="overflow-y:auto;">
     <div class="login-users">
         <?php
         $users = \common\models\User::find()->where(['status' => \common\models\User::STATUS_ACTIVE])->all();
         $selectedUserId = Yii::$app->request->get('id');
         foreach ($users as $user): ?>
             <a href="<?= \yii\helpers\Url::to(['site/login', 'id' => $user->id]) ?>" class="user-card<?= $selectedUserId == $user->id ? ' selected' : '' ?>">
-                <div class="user-name"><?= Html::encode($user->username) ?></div>
+                <div class="user-name">
+                    <?= Html::encode($user->nomeProprio . ' ' . $user->apelido) ?>
+                </div>
                 <div class="user-role"><?= Html::encode($user->email) ?></div>
             </a>
         <?php endforeach; ?>
@@ -28,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
         <?php if ($selectedUser): ?>
-            <div class="pin-title">PIN para <?= Html::encode($selectedUser->username) ?></div>
+            <div class="pin-title">PIN para <?= Html::encode($selectedUser->nomeProprio . ' ' . $selectedUser->apelido) ?></div>
             <form id="pin-login-form" method="post" action="<?= \yii\helpers\Url::to(['site/login', 'id' => $selectedUser->id]) ?>">
                 <input type="hidden" name="_csrf-frontend" value="<?= Yii::$app->request->getCsrfToken() ?>">
                 <input type="hidden" name="user_id" value="<?= $selectedUser->id ?>">

@@ -89,13 +89,20 @@ class UserController extends BaseController
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
+                // Gera auth_key se não existir
+                if (empty($model->auth_key)) {
+                    $model->generateAuthKey();
+                }
+                
                 // Trata password: só gera hash se foi preenchida
                 if (!empty($model->password_hash)) {
-                    $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
+                    $model->setPassword($model->password_hash);
                 } else {
-                    $model->password_hash = null;
+                    $model->addError('password_hash', 'Password é obrigatória para novos utilizadores.');
+                    return $this->render('create', ['model' => $model]);
                 }
-                if ($model->save(false)) {
+                
+                if ($model->save()) {
                     // RBAC: atribui role
                     $auth = \Yii::$app->authManager;
                     $auth->revokeAll($model->id);
@@ -103,11 +110,14 @@ class UserController extends BaseController
                     if ($role) {
                         $auth->assign($role, $model->id);
                     }
+                    
+                    \Yii::$app->session->setFlash('success', 'Utilizador criado com sucesso!');
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         } else {
             $model->loadDefaultValues();
+            $model->status = User::STATUS_ACTIVE; // Define como ativo por padrão
         }
 
         return $this->render('create', [
@@ -133,9 +143,10 @@ class UserController extends BaseController
                 $model->password_hash = $oldPasswordHash;
             } else {
                 // Se mudou, gera novo hash
-                $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
+                $model->setPassword($model->password_hash);
             }
-            if ($model->save(false)) {
+            
+            if ($model->save()) {
                 // RBAC: atualiza role
                 $auth = \Yii::$app->authManager;
                 $auth->revokeAll($model->id);
@@ -143,9 +154,14 @@ class UserController extends BaseController
                 if ($role) {
                     $auth->assign($role, $model->id);
                 }
+                
+                \Yii::$app->session->setFlash('success', 'Utilizador atualizado com sucesso!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
+
+        // Limpa o password_hash para não aparecer no form
+        $model->password_hash = '';
 
         return $this->render('update', [
             'model' => $model,

@@ -55,11 +55,34 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             [['cargo'], 'required'],
-            [['cargo'], 'in', 'range' => ['gestor', 'operador']],
+            [['cargo'], 'in', 'range' => ['administrador', 'gestor', 'operador']],
+            [['nomeProprio', 'apelido'], 'string', 'max' => 100],
+            [['username', 'email'], 'required'],
+            [['username', 'email'], 'unique'],
+            [['pin'], 'string', 'length' => 4],
+            [['pin'], 'match', 'pattern' => '/^[0-9]{4}$/', 'message' => 'PIN deve ter exatamente 4 dígitos numéricos.'],
         ];
+    }
+
+    /**
+     * Retorna o nome completo do utilizador
+     * @return string
+     */
+    public function getNomeCompleto()
+    {
+        if (!empty($this->nomeProprio) && !empty($this->apelido)) {
+            return trim($this->nomeProprio . ' ' . $this->apelido);
+        }
+        if (!empty($this->nomeProprio)) {
+            return $this->nomeProprio;
+        }
+        if (!empty($this->apelido)) {
+            return $this->apelido;
+        }
+        return $this->username;
     }
 
     /**
@@ -75,7 +98,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['api_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -118,6 +141,16 @@ class User extends ActiveRecord implements IdentityInterface
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
         ]);
+    }
+
+    /**
+     * Autentica por PIN (apenas users ativos)
+     * @param string $pin
+     * @return static|null
+     */
+    public static function findByPin($pin)
+    {
+        return static::findOne(['pin' => $pin, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -204,6 +237,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateEmailVerificationToken()
     {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Gera e atribui um novo token API
+     * @return string
+     */
+    public function generateApiToken()
+    {
+        $this->api_token = Yii::$app->security->generateRandomString(64);
+        $this->save(false, ['api_token']);
+        return $this->api_token;
     }
 
     /**

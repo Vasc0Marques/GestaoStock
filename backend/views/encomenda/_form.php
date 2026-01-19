@@ -32,12 +32,12 @@ if (!$model->isNewRecord && !empty($model->data_encomenda)) {
 // Sempre deixa data_rececao vazia no form
 $model->data_rececao = '';
 
-// Busca o nome/apelido do user logado
+// Busca o nome completo do user logado
 $userNome = '';
 if ($model->user_id) {
     $user = User::findOne($model->user_id);
     if ($user) {
-        $userNome = trim($user->username . (isset($user->apelido) ? ' ' . $user->apelido : ''));
+        $userNome = $user->getNomeCompleto();
     }
 }
 ?>

@@ -136,7 +136,7 @@ $this->title = 'Saída Stock';
                                                 'attribute' => 'user_id',
                                                 'label' => 'Utilizador',
                                                 'value' => function($model) {
-                                                    return $model->user ? $model->user->username : '';
+                                                    return $model->user ? $model->user->getNomeCompleto() : '';
                                                 }
                                             ],
                                         ],

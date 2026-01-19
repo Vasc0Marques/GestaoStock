@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'user_id',
                 'label' => 'Utilizador',
                 'value' => function($model) {
-                    return $model->user ? $model->user->username : '';
+                    return $model->user ? $model->user->getNomeCompleto() : '';
                 }
             ],
             [
@@ -47,18 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'quantidade',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Movimento $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
-            ],
+            'data_movimentacao',
         ],
         'toolbar' => [],
         'panel' => [
             'type' => GridView::TYPE_DEFAULT,
             'heading' => $this->title,
-            'footer' => Html::a('Create Movimento', ['create'], ['class' => 'btn btn-success']),
+            'footer' => false,
         ],
         'export' => [
             'fontAwesome' => true

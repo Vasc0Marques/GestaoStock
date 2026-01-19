@@ -5,7 +5,7 @@ namespace api\controllers;
 use yii\rest\Controller;
 use yii\filters\auth\HttpBearerAuth;
 
-class DefaultController extends Controller
+class DefaultController extends BaseApiController
 {
     public function behaviors()
     {
@@ -18,8 +18,6 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        return [
-            'message' => 'API is working!'
-        ];
+        return $this->success(['message' => 'API is working!']);
     }
 }
