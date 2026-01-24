@@ -28,6 +28,9 @@ return [
             'useCookies' => false,
         ],
         'db' => require __DIR__ . '/db.php',
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
