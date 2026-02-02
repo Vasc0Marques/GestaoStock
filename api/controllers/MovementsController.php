@@ -87,7 +87,7 @@ class MovementsController extends BaseApiController
             $mov->tipo = 'Saida';
             $mov->quantidade = $quantidade;
             $mov->data_movimentacao = date('Y-m-d H:i:s');
-            $mov->origem = $observacoes;
+            $mov->origem = 'APP';
             if (!$mov->save()) {
                 $transaction->rollBack();
                 return $this->error('save_failed', 'Erro ao registar movimento.', 500, $mov->getErrors());

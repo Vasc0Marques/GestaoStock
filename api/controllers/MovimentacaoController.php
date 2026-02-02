@@ -122,7 +122,7 @@ class MovimentacaoController extends BaseApiController
             $mov->tipo = $tipo === 'entrada' ? Movimento::TIPO_ENTRADA : Movimento::TIPO_SAIDA;
             $mov->quantidade = $quantidade;
             $mov->data_movimentacao = date('Y-m-d H:i:s');
-            $mov->origem = $origem;
+            $mov->origem = 'APP';
             if (!$mov->validate()) {
                 $transaction->rollBack();
                 return $this->error('validation', 'Dados inválidos', 400, $mov->getFirstErrors());

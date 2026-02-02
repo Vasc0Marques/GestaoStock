@@ -23,8 +23,18 @@ use Yii;
  * @property Stock[] $stocks
  * @property Zonas $zona
  */
+
 class Material extends \yii\db\ActiveRecord
 {
+    /**
+     * Retorna o stock atual do material
+     * @return int
+     */
+    public function getStockAtual()
+    {
+        $stock = $this->getStocks()->orderBy(['ultima_atualizacao' => SORT_DESC])->one();
+        return $stock ? $stock->quantidade_atual : 0;
+    }
 
 
     /**

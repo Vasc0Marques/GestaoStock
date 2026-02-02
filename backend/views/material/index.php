@@ -44,6 +44,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'unidade_medida',
             'stock_minimo',
+            [
+                'label' => 'Stock Atual',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $stockAtual = $model->getStockAtual();
+                    $stockMinimo = $model->stock_minimo;
+                    if ($stockAtual < $stockMinimo) {
+                        return '<span style="color:red;font-weight:bold;">' . $stockAtual . '</span>';
+                    }
+                    return $stockAtual;
+                },
+            ],
             //'criado_em',
             [
                 'class' => ActionColumn::class,
