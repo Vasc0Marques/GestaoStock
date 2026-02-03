@@ -55,6 +55,7 @@ class Material extends \yii\db\ActiveRecord
             [['stock_minimo'], 'default', 'value' => 0],
             [['nome_material', 'codigo', 'categoria_id', 'zona_id'], 'required'],
             [['categoria_id', 'zona_id', 'stock_minimo'], 'integer'],
+            ['stock_minimo', 'integer', 'min' => 0],
             [['criado_em'], 'safe'],
             [['nome_material'], 'string', 'max' => 100],
             [['codigo'], 'string', 'max' => 50],
