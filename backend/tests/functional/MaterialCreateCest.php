@@ -9,10 +9,10 @@ class MaterialCreateCest
     {
         // Login helper reutilizado
         $I->amOnRoute('/site/login');
-        $I->fillField(['name' => 'LoginForm[username]'], 'erau');
-        $I->fillField(['name' => 'LoginForm[password]'], 'password_0');
+        $I->fillField(['name' => 'LoginForm[username]'], 'vasco');
+        $I->fillField(['name' => 'LoginForm[password]'], '1');
         $I->click('login-button');
-        $I->see('Logout (erau)');
+        $I->see('Logout (vasco)');
     }
 
     public function createMaterial(FunctionalTester $I)
